@@ -19,5 +19,5 @@ echo queries/pubmed/$col/$topics
 find queries/pubmed/$col/$topics -type f | while read file
 do
     fileName=`basename $file`
-    echo "IndriRunQuery -index=$base/indexes/biocaddie_all -trecFormat $file > output/pubmed/$col/$topics/$fileName"
+    IndriRunQuery -index=$base/indexes/biocaddie_all -trecFormat $file > output/pubmed/$col/$topics/$fileName
 done
