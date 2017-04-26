@@ -74,9 +74,6 @@ public class GetFeedbackQueries {
         
 		queries.read(inputPath);
 		
-		GQueries rm3Queries = new GQueriesJsonImpl();
-	      
-
 		ScorerDirichlet docScorer = new ScorerDirichlet();		
 		docScorer.setParameter("mu", mu);
 		CollectionStats corpusStats = new IndexBackedCollectionStats();
