@@ -19,7 +19,7 @@ import edu.gslis.searchhits.SearchHit;
 import edu.gslis.searchhits.SearchHits;
 
 /** 
- * Rescore a preliminary retrieval given the following document prior:
+ * Re-scores a preliminary retrieval given the following document prior:
  * 
  *  p(D) = p(R=1 | D) = c(R=1,S)/c(R=1)
  *  

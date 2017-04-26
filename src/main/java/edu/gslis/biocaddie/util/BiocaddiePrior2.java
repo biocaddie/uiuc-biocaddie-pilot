@@ -18,17 +18,18 @@ import edu.gslis.searchhits.SearchHit;
 import edu.gslis.searchhits.SearchHits;
 
 /** 
- *  Rescore a preliminary retrieval given the following document prior:
- * 
- *  p(S|Q) = (c(S) + epsilon)/(|N| + epsilon*|S|)
+ *  Estimate prior probability that a document from a given source (repository)
+ *  is relevant based on feedback.
  *  
- *  Estimate probability of source based on initial retrieval.
+ *    p(S|Q) = (c(S) + epsilon)/(|N| + epsilon*|S|)
  *  
- *  qrels: Path to training qrels
- *  input: Path to preliminary retrieval in TREC format
- *  output: Rescored result set
- *  run: Run name
- *  k: Number of results to use to estimate prior (default 1000)
+ *  Re-scores a preliminary retrieval in TREC-text format.
+ *   
+ *    numDocs: Number of results to use to estimate prior (default 1000)
+ *    qrels: Path to training qrels
+ *    input: Path to preliminary retrieval in TREC format
+ *    output: Rescored result set
+ *    run: Run name
  */
 public class BiocaddiePrior2 extends BiocaddiePrior1
 {	
