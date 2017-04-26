@@ -43,12 +43,12 @@ The official BioCADDIE qrels and queries have been converted to Indri format in 
 
 ## Baseline models
 We provide several bash scripts to sweep various Indri baseline model parameters. 
-# ``dir.sh``: Query-likelihood with Dirichlet smoothing
-# ``jm.sh``: Query-likelihood with Jelinek-Mercer smoothing
-# ``okapi.sh``: Okapi-BM25
-# ``rm3.sh``:  Relevance models with original query interpolation
-# ``tfdf.sh``: Indri's default tfidf baseline
-# ``two.sh``: Query-likelihood with two-stage smoothing
+* ``dir.sh``: Query-likelihood with Dirichlet smoothing
+* ``jm.sh``: Query-likelihood with Jelinek-Mercer smoothing
+* ``okapi.sh``: Okapi-BM25
+* ``rm3.sh``:  Relevance models with original query interpolation
+* ``tfdf.sh``: Indri's default tfidf baseline
+* ``two.sh``: Query-likelihood with two-stage smoothing
 
 To run these scripts: 
 ``scripts/<model>.sh <topics> <collection>``
