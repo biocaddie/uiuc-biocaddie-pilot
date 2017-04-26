@@ -2,6 +2,7 @@ package edu.gslis.biocaddie.util;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Iterator;
 
 import org.apache.commons.cli.CommandLine;
@@ -82,6 +83,15 @@ public class GetFeedbackQueries {
 		corpusStats.setStatSource(indexPath);
 		docScorer.setCollectionStats(corpusStats);
 		
+		/*
+		<parameters>
+		<query>
+		    <number>EA1</number>
+		    <text>Find data of all types related to TGF-β signaling pathway across all databases</text>
+		</query>
+		</parameters>
+		*/
+		outputWriter.write("<parameters>\n");
 		Iterator<GQuery> queryIterator = queries.iterator();
 		while(queryIterator.hasNext()) {
 			GQuery query = queryIterator.next();
@@ -116,16 +126,40 @@ public class GetFeedbackQueries {
 	        rmVector.normalize();
 	        FeatureVector feedbackVector =
 	        		FeatureVector.interpolate(query.getFeatureVector(), rmVector, rmLambda);
+
 	        
-	        GQuery feedbackQuery = new GQuery();
-	        feedbackQuery.setTitle(query.getTitle());
-	        feedbackQuery.setText(query.getText());
-	        feedbackQuery.setFeatureVector(feedbackVector);
+	        outputWriter.write("<query>\n");
+	        outputWriter.write("   <number>" + query.getTitle() + "</number>\n");
+	        outputWriter.write("   <text>" + toIndri(feedbackVector) + "</text>\n");
+	        outputWriter.write("</query>\n");
 	        
-	        rm3Queries.addQuery(feedbackQuery);
+			/*
+			<parameters>
+			<query>
+			    <number>EA1</number>
+			    <text>Find data of all types related to TGF-β signaling pathway across all databases</text>
+			</query>
+			</parameters>
+			*/
+	        
 		}
-		outputWriter.write(rm3Queries.toString());
+		
+		outputWriter.write("</parameters>\n");
 		outputWriter.close();
+    }
+    
+    public static String toIndri(FeatureVector fv) {
+    	StringBuffer sb = new StringBuffer();
+    	DecimalFormat format = new DecimalFormat("#.#########");
+    	
+    	sb.append("#weight(");
+    	for (String feature: fv.getFeatures()) {
+    		double w = fv.getFeatureWeight(feature);
+    		sb.append(" " + format.format(w) + " " + feature);
+    	}
+    	sb.append(")");
+
+    	return sb.toString();
     }
     
     
