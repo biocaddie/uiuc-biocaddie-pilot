@@ -10,6 +10,11 @@ This repository contains the code used in the NDS/uiucGSLIS submission to the 20
 
 This submission relies on the [ir-tools](https://github.com/uiucGSLIS/ir-tools) framework maintained by Miles Efron's lab at the University of Illinois at Urbana-Champaign.
 
+
+## Maven build
+The Maven build process is currently unpleasant due to a missing artifact and down artifactory instance.  In the meantime:
+``cp -r /data/willis8/bioCaddie/libs`` to your project directory.
+
 ## Replication steps
 
 This section describes the steps to repeat our 2016 BioCADDIE challenge submissions. The basic steps are:
