@@ -1,0 +1,26 @@
+<parameters>
+<query>
+    <number>EA1</number>
+    <text>TGF-β signaling pathway</text>
+</query>
+<query>
+    <number>EA2</number>
+    <text>synaptic growth remodeling glycolysis human brain</text>
+</query>
+<query>
+    <number>EA3</number>
+    <text>BRCA gene mutations estrogen signaling pathway women stage I breast cancer</text>
+</query>
+<query>
+    <number>EA4</number>
+    <text>regulation DNA repair estrogen signaling pathway breast cancer</text>
+</query>
+<query>
+    <number>EA5</number>
+    <text>multiple sclerosis</text>
+</query>
+<query>
+    <number>EA6</number>
+    <text>T-cell homeostasis multiple sclerosis</text>
+</query>
+</parameters>

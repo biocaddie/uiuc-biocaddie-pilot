@@ -1,0 +1,26 @@
+<parameters>
+<query>
+    <number>EA1</number>
+    <text>Find data of all types related to TGF-β signaling pathway across all databases</text>
+</query>
+<query>
+    <number>EA2</number>
+    <text>Find data of all types on synaptic growth and remodeling related to glycolysis in the human brain across all databases</text>
+</query>
+<query>
+    <number>EA3</number>
+    <text>Search for data on BRCA gene mutations and the estrogen signaling pathway in women with stage I breast cancer</text>
+</query>
+<query>
+    <number>EA4</number>
+    <text>Find data of all types on the regulation of DNA repair related to the estrogen signaling pathway in breast cancer</text>
+</query>
+<query>
+    <number>EA5</number>
+    <text>Search for data of all types on multiple sclerosis of all types across all databases</text>
+</query>
+<query>
+    <number>EA6</number>
+    <text>Find data on T-cell homeostasis related to multiple sclerosis across all databases</text>
+</query>
+</parameters>

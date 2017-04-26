@@ -1,0 +1,86 @@
+<parameters>
+<query>
+    <number>EA1</number>
+    <text>Find data of all types related to TGF-β signaling pathway across all databases</text>
+</query>
+<query>
+    <number>EA2</number>
+    <text>Find data of all types on synaptic growth and remodeling related to glycolysis in the human brain across all databases</text>
+</query>
+<query>
+    <number>EA3</number>
+    <text>Search for data on BRCA gene mutations and the estrogen signaling pathway in women with stage I breast cancer</text>
+</query>
+<query>
+    <number>EA4</number>
+    <text>Find data of all types on the regulation of DNA repair related to the estrogen signaling pathway in breast cancer</text>
+</query>
+<query>
+    <number>EA5</number>
+    <text>Search for data of all types on multiple sclerosis of all types across all databases</text>
+</query>
+<query>
+    <number>EA6</number>
+    <text>Find data on T-cell homeostasis related to multiple sclerosis across all databases</text>
+</query>
+<query>
+    <number>T1</number>
+    <text>Find protein sequencing data related to bacterial chemotaxis across all databases</text>
+</query>
+<query>
+    <number>T2</number>
+    <text>Search for data of all types related to MIP-2 gene related to biliary atresia across all databases</text>
+</query>
+<query>
+    <number>T3</number>
+    <text>Search for all data types related to gene TP53INP1 in relation to p53 activation across all databases</text>
+</query>
+<query>
+    <number>T4</number>
+    <text>Find all data types related to inflammation during oxidative stress in human hepatic cells across all databases</text>
+</query>
+<query>
+    <number>T5</number>
+    <text>Search for gene expression and genetic deletion data that mention CD69 in memory augmentation studies across all databases</text>
+</query>
+<query>
+    <number>T6</number>
+    <text>Search for data of all types related to the LDLR gene related to cardiovascular disease across all databases</text>
+</query>
+<query>
+    <number>T7</number>
+    <text>Search for gene expression datasets on photo transduction and regulation of calcium in blind D. melanogaster</text>
+</query>
+<query>
+    <number>T8</number>
+    <text>Search for proteomic data related to regulation of calcium in blind D. melanogaster</text>
+</query>
+<query>
+    <number>T9</number>
+    <text>Search for data of all types related to the ob gene in obese M. musculus across all databases</text>
+</query>
+<query>
+    <number>T10</number>
+    <text>Search for data of all types related to energy metabolism in obese M. musculus</text>
+</query>
+<query>
+    <number>T11</number>
+    <text>Search for all data for the HTT gene related to Huntington’s disease across all databases</text>
+</query>
+<query>
+    <number>T12</number>
+    <text>Search for data on neural brain tissue in transgenic mice related to Huntington’s disease </text>
+</query>
+<query>
+    <number>T13</number>
+    <text>Search for all data on the SNCA gene related to Parkinson’s disease across all databases</text>
+</query>
+<query>
+    <number>T14</number>
+    <text>Search for data on nerve cells in the substantia nigra in mice across all databases</text>
+</query>
+<query>
+    <number>T15</number>
+    <text>Find data on the NF-κB signaling pathway in MG (Myasthenia gravis) patients</text>
+</query>
+</parameters>

@@ -1,0 +1,86 @@
+<parameters>
+<query>
+<number>EA1</number>
+<text>find data types related tgf-β signaling pathway databases</text>
+</query>
+<query>
+<number>EA2</number>
+<text>find data types synaptic growth remodeling related glycolysis human brain databases</text>
+</query>
+<query>
+<number>EA3</number>
+<text>search data brca gene mutations estrogen signaling pathway women stage breast cancer</text>
+</query>
+<query>
+<number>EA4</number>
+<text>find data types regulation dna repair related estrogen signaling pathway breast cancer</text>
+</query>
+<query>
+<number>EA5</number>
+<text>search data types multiple sclerosis types databases</text>
+</query>
+<query>
+<number>EA6</number>
+<text>find data t-cell homeostasis related multiple sclerosis databases</text>
+</query>
+<query>
+<number>T1</number>
+<text>find protein sequencing data related bacterial chemotaxis databases</text>
+</query>
+<query>
+<number>T2</number>
+<text>search data types related mip-2 gene related biliary atresia databases</text>
+</query>
+<query>
+<number>T3</number>
+<text>search data types related gene tp53inp1 relation p53 activation databases</text>
+</query>
+<query>
+<number>T4</number>
+<text>find data types related inflammation oxidative stress human hepatic cells databases</text>
+</query>
+<query>
+<number>T5</number>
+<text>search gene expression genetic deletion data mention cd69 memory augmentation studies databases</text>
+</query>
+<query>
+<number>T6</number>
+<text>search data types related ldlr gene related cardiovascular disease databases</text>
+</query>
+<query>
+<number>T7</number>
+<text>search gene expression datasets photo transduction regulation calcium blind d. melanogaster</text>
+</query>
+<query>
+<number>T8</number>
+<text>search proteomic data related regulation calcium blind d. melanogaster</text>
+</query>
+<query>
+<number>T9</number>
+<text>search data types related ob gene obese m. musculus databases</text>
+</query>
+<query>
+<number>T10</number>
+<text>search data types related energy metabolism obese m. musculus</text>
+</query>
+<query>
+<number>T11</number>
+<text>search data htt gene related huntington’s disease databases</text>
+</query>
+<query>
+<number>T12</number>
+<text>search data neural brain tissue transgenic mice related huntington’s disease</text>
+</query>
+<query>
+<number>T13</number>
+<text>search data snca gene related parkinson’s disease databases</text>
+</query>
+<query>
+<number>T14</number>
+<text>search data nerve cells substantia nigra mice databases</text>
+</query>
+<query>
+<number>T15</number>
+<text>find data nf-κb signaling pathway mg (myasthenia gravis) patients</text>
+</query>
+</parameters>
