@@ -26,6 +26,10 @@ import edu.gslis.searchhits.SearchHits;
 import edu.gslis.textrepresentation.FeatureVector;
 import edu.gslis.utils.Stopper;
 
+/**
+ * Given a set of topics and an index, generate
+ * RM3 feedback queries and write to an output file.
+ */
 public class GetFeedbackQueries {
 
     public static void main(String[] args) throws ParseException, IOException {
@@ -35,7 +39,7 @@ public class GetFeedbackQueries {
         CommandLine cl = parser.parse( options, args);
         if (cl.hasOption("help")) {
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp( StemIndriQueries.class.getCanonicalName(), options );
+            formatter.printHelp( GetFeedbackQueries.class.getCanonicalName(), options );
             return;
         }
         

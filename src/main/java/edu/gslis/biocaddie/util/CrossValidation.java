@@ -25,18 +25,11 @@ import org.apache.commons.io.FileUtils;
  * 2. Run mkeval.sh, which simply runs trec_eval -c -m all_trec -q, and outputs
  *    to a separate evaluation file per parameter combination.
  * 3. Run this class passing in the path to the trec_eval output directory and the
- *    desired metric
- * 
+ *    desired metric.
  */
 public class CrossValidation 
-{
-	
+{	
 
-	/**
-	 * Everything happens in main...
-	 * @param args
-	 * @throws Exception
-	 */
     public static void main(String[] args) throws Exception 
     {
         Options options = createOptions();

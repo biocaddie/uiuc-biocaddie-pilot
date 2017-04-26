@@ -21,8 +21,6 @@ import com.google.gson.JsonParser;
 
 /**
  * Converts the BioCADDIE DATS format to TREC Text format for indexing with indri
- * @author cwillis
- *
  */
 public class DATSToTrecText {
     

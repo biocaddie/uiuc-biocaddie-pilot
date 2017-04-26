@@ -16,6 +16,9 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 
 
+/**
+ * Convert PubMed text to TREC text format.
+ */
 public class PMCToTrecText {
     
 
@@ -44,7 +47,6 @@ public class PMCToTrecText {
         	
         	if (currentEntry.isFile()) {
 	            br = new BufferedReader(new InputStreamReader(tarFile)); // Read directly from tarInput
-	            //System.out.println("For File = " + currentEntry.getName());
 	            String line;
 	            String text ="";
 	            while ((line = br.readLine()) != null) {
@@ -72,9 +74,6 @@ public class PMCToTrecText {
         Options options = new Options();
         options.addOption("input", true, "Path to input gz");
         options.addOption("output", true, "Path to output file");
-        //options.addOption("date", true, "Default date");
-        options.addOption("startTime", true, "Collection start date");
-        options.addOption("endTime", true, "Collection end date");
         return options;
     }
 }
