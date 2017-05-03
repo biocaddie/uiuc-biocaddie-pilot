@@ -90,10 +90,15 @@ public class BiocaddiePrior2 extends BiocaddiePrior1
         	
         	hits.add(hit);
         	
+        	//System.out.println(query + "," + docno + "," + score);
         	results.put(query, hits);
         }
         
-        applyPrior(results, sourceMap, numDocs);
+        for (String query: results.keySet()) {
+        	results.get(query).rank();
+        }
+        
+        results = applyPrior(results, sourceMap, numDocs);
         
         FileWriter outputWriter  = new FileWriter(outputPath);
         
@@ -104,20 +109,21 @@ public class BiocaddiePrior2 extends BiocaddiePrior1
         	for (int i=0; i< hits.size(); i++) {
         		SearchHit hit = hits.getHit(i);
             	outputWriter.write(query + " Q0 " + hit.getDocno() 
-            			+ " " + (i+1) + " " + hit.getScore() + " " + runName);      		
+            			+ " " + (i+1) + " " + hit.getScore() + " " + runName + "\n");      		
         	}
-        	outputWriter.close();
         }
+    	outputWriter.close();
     }
 
     
-    protected static void applyPrior(Map<String, SearchHits> results, Map<String, String> sourceMap, 
+    protected  static Map<String, SearchHits> applyPrior(Map<String, SearchHits> results, Map<String, String> sourceMap, 
     		int numDocs) {
     	
     	
     	for (String query: results.keySet()) {
     		SearchHits hits = results.get(query);
 
+    		//System.out.println("Query: " + query);
         	Map<String, Double> repoPrior = new TreeMap<String, Double>();
 
     		if (hits.size() < numDocs)
@@ -130,7 +136,7 @@ public class BiocaddiePrior2 extends BiocaddiePrior1
     			
         		double count = 0;
         		if (repoPrior.containsKey(repo)) 
-        			count += repoPrior.get(repo);
+            		count = repoPrior.get(repo) + 1;
         		
         		repoPrior.put(repo, count);
     		}    		
@@ -143,24 +149,31 @@ public class BiocaddiePrior2 extends BiocaddiePrior1
             }
             
             // Rescore the results for this query
+            SearchHits rescored = new SearchHits();
     		for (SearchHit hit: hits.hits()) {
     			String repo = sourceMap.get(hit.getDocno());
-    			double pr = repoPrior.get(repo);
-    			
-    			double score = Math.exp(hit.getScore())*pr;
-    			hit.setScore(score);
-    		}    		
-    		hits.rank();
 
-    		results.put(query, hits);
+    			double score = hit.getScore();
+    			if (repoPrior.get(repo) != null) {
+    				double pr = repoPrior.get(repo);
+    				score = Math.exp(hit.getScore())*pr;
+    				score = Math.log(score);
+    			}
+    			hit.setScore(score);
+    			rescored.add(hit);
+    		}    		
+    		rescored.rank();
+
+    		results.put(query, rescored);
     	}
+    	return results;
     }
     public static Options createOptions()
     {
         Options options = new Options();
-        options.addOption("source", true, "Path to source training data");
+        options.addOption("source", true, "Path to map of docs to repos");
         options.addOption("numDocs", true, "Number of pseudo-feedback documents");
-        options.addOption("results", true, "Path to results file");
+        options.addOption("input", true, "Input path");
         options.addOption("output", true, "Output path");
         options.addOption("run", true, "Run name");
 
