@@ -15,9 +15,13 @@ col=$2
 base=/data/bioCaddie
 
 mkdir -p output/pubmed/$col/$topics
-echo queries/pubmed/$col/$topics
 find queries/pubmed/$col/$topics -type f | while read file
 do
-    fileName=`basename $file`
-    IndriRunQuery -index=$base/indexes/biocaddie_all -trecFormat $file > output/pubmed/$col/$topics/$fileName
+    for mu in 100 500 1000 2500
+    do
+        fileName=`basename $file`
+        echo "IndriRunQuery -index=$base/indexes/biocaddie_all -rule=method:dir,mu:$mu -trecFormat $file > output/pubmed/$col/$topics/$fileName,dir-mu:$mu"
+    done
 done
+
+# pubmed/runqueries.sh short combined | parallel -j 10 bash -c "{}"
