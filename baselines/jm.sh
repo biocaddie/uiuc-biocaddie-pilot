@@ -12,9 +12,9 @@ if [ -z "$2" ]; then
 fi
 col=$2
 
-base=/data/bioCaddie
+base=/data/biocaddie
 mkdir -p output/jm/$col/$topics
 for lambda in 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
 do
-   IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:jm,lambda:$lambda $base/queries/queries.$col.$topics > output/jm/$col/$topics/lambda=$lambda
+   IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:jm,lambda:$lambda queries/queries.$col.$topics > output/jm/$col/$topics/lambda=$lambda
 done

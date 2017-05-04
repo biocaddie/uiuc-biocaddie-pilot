@@ -12,7 +12,7 @@ if [ -z "$2" ]; then
 fi
 col=$2
 
-base=/data/bioCaddie
+base=/data/biocaddie
 mkdir -p output/rm3/$col/$topics
 for mu in 100 250 500 750 1000 2000 3000 
 do
