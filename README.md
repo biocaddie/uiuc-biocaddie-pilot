@@ -16,15 +16,15 @@ You can either install prerequisites or use our provided Docker container.
 ## Install prerequisites
 The following instructions assume an Ubuntu system running as root user:
 
-``bash
+```bash
 apt-get update
 apt-get install openjdk-8-jdk-headless maven
 apt-get install r-base
-apt-get install build-essential wget vim  zlibc zlib1g zlib1g-dev
-``
+apt-get install build-essential parallel vim wget zlibc zlib1g zlib1g-dev
+```
 
 Build and install Indri:
-``bash
+```bash
 cd /usr/local/src
 wget https://sourceforge.net/projects/lemur/files/lemur/indri-5.11/indri-5.11.tar.gz/download -O indri-5.11.tar.gz
 tar xvfz indri-5.11.tar.gz
@@ -32,29 +32,39 @@ cd indri-5.11
 ./configure --enable-java --with-javahome=/usr/lib/jvm/java-8-openjdk-amd64
 make 
 make install
-``
+```
+
+Build and install trec_eval:
+```bash
+cd /usr/local/src
+wget http://trec.nist.gov/trec_eval/trec_eval_latest.tar.gz
+tar xvfz trec_eval_latest.tar.gz
+cd trec_eval.9.0/
+make
+make install
+```
 
 ## Run Docker image
 Instead of installing the prerequisites on your system, the provided Docker image contains all of the required dependencies. The following example assumes that you've downloaded the BioCADDIE benchmark data to /data/biocaddie.
 
-``bash
+```bash
 docker run -it /data/biocaddie:/data/biocaddie ndslabs/indri bash
-``
+```
 
 ## Clone this repository and build artifacts
 
 Download and install the ir-tools and indri libraries (Note: we're working to [add these to the Maven Central repository](https://opensource.ncsa.illinois.edu/jira/browse/NDS-849)):
-``bash
+```bash
 wget https://github.com/nds-org/biocaddie/releases/download/v0.1/ir-utils-0.0.1-SNAPSHOT.jar
 mvn install:install-file -Dfile=ir-utils-0.0.1-SNAPSHOT.jar -DgroupId=edu.gslis -DartifactId=ir-utils -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
 mvn install:install-file -Dfile=/usr/local/share/indri/indri.jar -DgroupId=indri -DartifactId=indri -Dversion=5.11 -Dpackaging=jar
-``
+```
 
-``bash
+```bash
 git clone https://github.com/nds-org/biocaddie
 cd biocaddie
 mvn install
-``
+```
 
 
 ## Replication steps
@@ -73,38 +83,39 @@ This section describes the steps to repeat our 2016 BioCADDIE challenge submissi
 ### Convert benchmark data to trectext format
 
 Download the [BioCADDIE benchmark collection in JSON format](https://biocaddie.org/sites/default/files/update_json_folder.zip).
-``bash
+```bash
 mkdir -p /data/biocaddie/data
 wget https://biocaddie.org/sites/default/files/update_json_folder.zip
-cd /data/biocaddie/data
-unzip 
-update_json_folder.zip
-``
+```
 
 ### Convert data to TREC-text format:
-``bash
+```bash
 cd ~/biocaddie
 scripts/dats2trec.sh
-``
+```
 
 This converts the benchmark data to trectext format.  This produces a file ``/data/biocaddie/data/biocaddie_all.txt``. You can remove the original benchmark data, if desired.
+
+You may see the following error, which is expected:
+```bash
+java.lang.ClassCastException: com.google.gson.JsonNull cannot be cast to com.google.gson.JsonObject
+	at edu.gslis.biocaddie.util.DATSToTrecText.main(DATSToTrecText.java:61)
+```
 
 ### Create the biocaddie index
 
 Use ``IndriBuildIndex`` to build the ``biocaddie_all`` index (customize paths as needed):
-
-``bash
+```bash
+mkdir /data/biocaddie/index
 cd ~/biocaddie
 IndriBuildIndex index/build_index.biocaddie.params
-``
-
+```
 
 ### Qrels and queries
-
-The official BioCADDIE qrels and queries have been converted to Indri format in the ``qrels`` and ``queries`` directories.  We provide both the original training queries and final test queries and qrels, as well as combined sets for ongoing research.  We also provide the original official queries as well as stopped and manually shortened versions. We only use the original queries in our official submissions.
+The official BioCADDIE qrels and queries have been converted to Indri format in the ``qrels`` and ``queries`` directories.  We provide both the original training queries and final test queries and qrels, as well as combined sets for ongoing research.  We also provide the original official queries as well as stopped and manually shortened versions. We only use the original queries in our official submissions, but the shortened queries are used for our primarily evaluation.
 
 ## Baseline models
-We provide several bash scripts to sweep various Indri baseline model parameters. 
+We provide several bash scripts to sweep various Indri baseline model parameters:
 * ``dir.sh``: Query-likelihood with Dirichlet smoothing
 * ``jm.sh``: Query-likelihood with Jelinek-Mercer smoothing
 * ``okapi.sh``: Okapi-BM25
@@ -113,7 +124,9 @@ We provide several bash scripts to sweep various Indri baseline model parameters
 * ``two.sh``: Query-likelihood with two-stage smoothing
 
 To run these scripts: 
-``scripts/<model>.sh <topics> <collection>``
+```bash
+baselines/<model>.sh <topics> <collection>
+```
 
 Where ``<topics>`` is one of ``short, stopped, orig`` and collection is one of ``train, test, combined``. For example:
 
@@ -137,7 +150,16 @@ The output file is formatted as:
 ## Comparing model output 
 To compare models, use the ``compare.R`` script:
 
-``Rscript compare.R <collection> <from model> <to model> <topics>``
+```bash
+Rscript scripts/compare.R <collection> <from model> <to model> <topics>
+```
+
+For example:
+```bash
+Rscript scripts/compare.R combined tfidf dir short
+```
+
+
 
 For example
 ``Rscript compare.R train dir two orig``
@@ -146,7 +168,9 @@ This will report the p-values of a paired, one-tailed t-test with the alternativ
 
 The model comparisons can be used to select the best model from the training data.  Model parameter estimates must be determined from the LOOCV output.
 
-## Converting PubMed data to trectext
+## PubMed Open Access data
+
+# Converting PubMed data to trectext
 
 Download the PubMed oa_bulk datasets to ``/data/pubmed/oa_bulk``:
 * ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.0-9A-B.txt.tar.gz
