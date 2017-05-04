@@ -13,33 +13,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>    
-    <distributionManagement>
-        <repository>
-            <id>nema-dev.lis.illinois.edu</id>
-            <name>nema-dev.lis.illinois.edu-releases</name>
-            <url>http://nema-dev.lis.illinois.edu/artifactory//ir-libs</url>
-        </repository>
-        <snapshotRepository>
-            <id>nema-dev.lis.illinois.edu</id>
-            <name>nema-dev.lis.illinois.edu-snapshots</name>
-            <url>http://nema-dev.lis.illinois.edu/artifactory//ir-libs</url>
-        </snapshotRepository>
-    </distributionManagement>
-    <repositories>
-        <repository>
-            <name>ir-libs</name>
-            <id>ir-libs</id>
-            <url>http://nema-dev.lis.illinois.edu/artifactory/ir-libs/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-        </repository>
-    </repositories>
     <build>
         <plugins>
           <plugin>
@@ -124,6 +97,16 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
             <version>3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.13</version>
         </dependency>
        <dependency>
            <groupId>edu.gslis</groupId>

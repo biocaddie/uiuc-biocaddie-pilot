@@ -1,8 +1,8 @@
 <parameters>
-  <index>/data/biocaddie/index/biocaddie</index>
+  <index>/data/biocaddie/indexes/biocaddie_all</index>
   <indexType>indri</indexType>
   <corpus>
-    <path>/data/biocaddie/data/biocaddie.txt</path>
+    <path>/data/biocaddie/data/biocaddie_all.txt</path>
     <class>trectext</class>
   </corpus>
 </parameters>

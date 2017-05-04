@@ -18,7 +18,7 @@ if [ -z "$3" ]; then
 fi
 col=$3
 
-qrels=/data/bioCaddie/qrels/biocaddie.qrels.$col
+qrels=qrels/biocaddie.qrels.$col
 
 # Calculate metrics using trec_eval
 for file in `find output/$model/$col/$topics -type f -size +0`;
