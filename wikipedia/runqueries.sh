@@ -12,7 +12,7 @@ if [ -z "$2" ]; then
 fi
 col=$2
 
-base=/data/bioCaddie
+base=/data/biocaddie
 
 mkdir -p output/wikipedia/$col/$topics
 find queries/wikipedia/$col/$topics -type f | while read file
@@ -24,4 +24,4 @@ do
     done
 done
 
-# pubmed/runqueries.sh short combined | parallel -j 10 bash -c "{}"
+# wikipedia/runqueries.sh short combined | parallel -j 10 bash -c "{}"
