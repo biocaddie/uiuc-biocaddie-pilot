@@ -1,6 +1,6 @@
-# NDS/uiucGSLIS BioCADDIE Challenge 
+# NDS BioCADDIE Prototype 
 
-This repository contains the code used in the NDS/uiucGSLIS submission to the 2016 BioCADDIE challenge. The submission is based primarily on the Indri search engine and explores 1) feedback-based expansion models using PubMed as an external collection and 2) document priors based on dataset source repository.
+This repository contains the code used in the NDS/uiucGSLIS submission to the 2016 BioCADDIE challenge and subsequent prototype. The submission is based primarily on the Indri search engine and explores 1) feedback-based expansion models using PubMed as an external collection and 2) document priors based on dataset source repository.
 
 ## Prerequisites
 
@@ -136,11 +136,13 @@ This will produce an output directory ``output/model/combined/short`` containing
 
 ## Cross-validation
 
-The ``mkeval.sh`` script generates ``trec_eval`` output files for each parameter combination and then runs leave-one-query-out cross validation (loocv) on the results.
+The ``mkeval.sh`` script generates ``trec_eval`` output files for each parameter combination and then runs leave-one-query-out cross validation (loocv) on the results, optimizing for specific metrics.
 
-``scripts/mkeval.sh <model> <topics> <collection>``
+```bash
+scripts/mkeval.sh <model> <topics> <collection>
+```
 
-The loocv process optimizes for the following metrics: map, ndcg, P_20, ndcg_cut_20.  This process generates on e output file per metric for the model/collection/topics.   
+The loocv process optimizes for the following metrics: map, ndcg, P_20, ndcg_cut_20.  This process generates one output file per metric for the model/collection/topics.  For example:
 
 ``loocv/model.collection.topics.metric.out``
 
@@ -148,7 +150,7 @@ The output file is formatted as:
 ``<query>	<parameter combination> 	<metric value>``
 
 ## Comparing model output 
-To compare models, use the ``compare.R`` script:
+To compare models, use the ``compare.R`` script. This runs a paired one-tailed t-test comparing two models and outputs the metrics averages and p-value: 
 
 ```bash
 Rscript scripts/compare.R <collection> <from model> <to model> <topics>
@@ -159,16 +161,14 @@ For example:
 Rscript scripts/compare.R combined tfidf dir short
 ```
 
-
-
-For example
-``Rscript compare.R train dir two orig``
-
 This will report the p-values of a paired, one-tailed t-test with the alternative hypothesis that <to model> is greater than <from model>.
 
 The model comparisons can be used to select the best model from the training data.  Model parameter estimates must be determined from the LOOCV output.
 
+
 ## PubMed Open Access data
+
+This describes the process for building and running the PubMed expansion models.
 
 # Converting PubMed data to trectext
 
@@ -200,6 +200,16 @@ The script ``pubmed/runqueries.sh`` will run these queries against the ``biocadd
 
 ``scripts/pubmed/runqueries.sh <topics> <collection>``
 
-### Re-scoring using source priors
+
+## Using GNU parallel
+
+Several of these models (rm3, pubmed, wikipedia, sdm) benefit from parallelization, which can easily be implemented using [GNU parallel](https://www.gnu.org/software/parallel/. For example:
+
+```bash
+baselines/rm3.sh short combined | parallel -j 20 bash -c "{}"
+pubmed/runqueries.sh short combined | parallel -j 10 bash -c "{}"
+```
+
+## Re-scoring using source priors
 
 Coming soon.
