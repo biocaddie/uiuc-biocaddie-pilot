@@ -170,7 +170,7 @@ The model comparisons can be used to select the best model from the training dat
 
 This describes the process for building and running the PubMed expansion models.
 
-# Converting PubMed data to trectext
+### Converting PubMed data to trectext
 
 Download the PubMed oa_bulk datasets to ``/data/pubmed/oa_bulk``:
 * ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.0-9A-B.txt.tar.gz
@@ -192,13 +192,32 @@ The PubMed experiment requires two stages.  First, it uses ``edu.gslis.biocaddie
 
 This requires sweeping the RM3 model parameters (mu, fbDocs, fbTerms, lambda) for the pubmed collection as well as the Dirichlet mu parameter for the biocaddie collection.
 
-The script ``pubmed/genrm3.sh`` will generate RM3 queries from the ``pubmed`` index in Gquery format.
+This section assumes that you have an existing PubMed index under ``/data/pubmed/indexes/pubmed``:
 
-``scripts/pubmed/genrm3.sh <topics> <collection>``
+Create the RM expanded queries:
+```bash
+pubmed/genrm3.sh short combined
+```
 
-The script ``pubmed/runqueries.sh`` will run these queries against the ``biocaddie`` index:
+This will generate a set of expanded queries (mu=2500) under ``queries/pubmed/``. Now run the queries against the BioCADDIE index:
+```bash
+pubmed/runqueries.sh short combined | parallel -j 20 bash -c "{}"
+```
 
-``scripts/pubmed/runqueries.sh <topics> <collection>``
+
+
+## Expansion with Wikipedia
+
+This section assumes that you have an existing Wikipedia index under ``/data/wikipedia/indexes/20150901/index/``. TODO: Need to add instructions for building the Wikipedia index:
+
+Create the RM expanded queries:
+```bash
+wikipedia/genrm3.sh short combined
+```
+This will generate a set of expanded queries (mu=2500) under ``queries/wikipedia/``. Now run the queries against the BioCADDIE index:
+```bash
+wikipedia/runqueries.sh short combined | parallel -j 20 bash -c "{}"
+```
 
 
 ## Using GNU parallel
