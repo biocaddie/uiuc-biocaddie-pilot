@@ -11,10 +11,51 @@ This repository contains the code used in the NDS/uiucGSLIS submission to the 20
 
 This submission relies on the [ir-tools](https://github.com/uiucGSLIS/ir-tools) framework maintained by Miles Efron's lab at the University of Illinois at Urbana-Champaign.
 
+You can either install prerequisites or use our provided Docker container.
 
-## Maven build
-The Maven build process is currently unpleasant due to a missing artifact and down artifactory instance.  In the meantime:
-``cp -r /data/willis8/bioCaddie/libs`` to your project directory.
+## Install prerequisites
+The following instructions assume an Ubuntu system running as root user:
+
+``bash
+apt-get update
+apt-get install openjdk-8-jdk-headless maven
+apt-get install r-base
+apt-get install build-essential wget vim  zlibc zlib1g zlib1g-dev
+``
+
+Build and install Indri:
+``bash
+cd /usr/local/src
+wget https://sourceforge.net/projects/lemur/files/lemur/indri-5.11/indri-5.11.tar.gz/download -O indri-5.11.tar.gz
+tar xvfz indri-5.11.tar.gz
+cd indri-5.11
+./configure --enable-java --with-javahome=/usr/lib/jvm/java-8-openjdk-amd64
+make 
+make install
+``
+
+## Run Docker image
+Instead of installing the prerequisites on your system, the provided Docker image contains all of the required dependencies. The following example assumes that you've downloaded the BioCADDIE benchmark data to /data/biocaddie.
+
+``bash
+docker run -it /data/biocaddie:/data/biocaddie ndslabs/indri bash
+``
+
+## Clone this repository and build artifacts
+
+Download and install the ir-tools and indri libraries (Note: we're working to [add these to the Maven Central repository](https://opensource.ncsa.illinois.edu/jira/browse/NDS-849)):
+``bash
+wget https://github.com/nds-org/biocaddie/releases/download/v0.1/ir-utils-0.0.1-SNAPSHOT.jar
+mvn install:install-file -Dfile=ir-utils-0.0.1-SNAPSHOT.jar -DgroupId=edu.gslis -DartifactId=ir-utils -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
+mvn install:install-file -Dfile=/usr/local/share/indri/indri.jar -DgroupId=indri -DartifactId=indri -Dversion=5.11 -Dpackaging=jar
+``
+
+``bash
+git clone https://github.com/nds-org/biocaddie
+cd biocaddie
+mvn install
+``
+
 
 ## Replication steps
 
@@ -31,16 +72,31 @@ This section describes the steps to repeat our 2016 BioCADDIE challenge submissi
 
 ### Convert benchmark data to trectext format
 
-* Download the [BioCADDIE benchmark collection in JSON format](https://biocaddie.org/sites/default/files/update_json_folder.zip).
-* Copy data to ``/data/biocaddie/data``
-* ``unzip update_json_folder.zip``
-* Run ``scripts/dats2trec.sh`` to convert the benchmart data to trectext format.  This produces a file ``/data/biocaddie/data/biocaddie_all.txt``
+Download the [BioCADDIE benchmark collection in JSON format](https://biocaddie.org/sites/default/files/update_json_folder.zip).
+``bash
+mkdir -p /data/biocaddie/data
+wget https://biocaddie.org/sites/default/files/update_json_folder.zip
+cd /data/biocaddie/data
+unzip 
+update_json_folder.zip
+``
+
+### Convert data to TREC-text format:
+``bash
+cd ~/biocaddie
+scripts/dats2trec.sh
+``
+
+This converts the benchmark data to trectext format.  This produces a file ``/data/biocaddie/data/biocaddie_all.txt``. You can remove the original benchmark data, if desired.
 
 ### Create the biocaddie index
 
 Use ``IndriBuildIndex`` to build the ``biocaddie_all`` index (customize paths as needed):
 
-``IndriBuildIndex index/build_index.biocaddie.params``
+``bash
+cd ~/biocaddie
+IndriBuildIndex index/build_index.biocaddie.params
+``
 
 
 ### Qrels and queries
