@@ -1,13 +1,13 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-   echo "./genqueries.sh <topics> <collection>"
+   echo "./gensd.sh <topics> <collection>"
    exit 1;
 fi
 topics=$1
 
 if [ -z "$2" ]; then
-   echo "./genqueries.sh <topics> <collection>"
+   echo "./gensd.sh <topics> <collection>"
    exit 1;
 fi
 col=$2
