@@ -1,13 +1,13 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-   echo "./rm3 <topics> <collection>"
+   echo "./rm3.sh <topics> <collection>"
    exit 1;
 fi
 topics=$1
 
 if [ -z "$2" ]; then
-   echo "./rm3 <topics> <collection>"
+   echo "./rm3.sh <topics> <collection>"
    exit 1;
 fi
 col=$2
