@@ -20,7 +20,10 @@ do
     for mu in 100 500 1000 2500
     do
         fileName=`basename $file`
-        echo "IndriRunQuery -index=$base/indexes/biocaddie_all -rule=method:dir,mu:$mu -trecFormat $file > output/fdm/$col/$topics/$fileName,dir-mu:$mu"
+        if [ ! -f "output/fdm/$col/$topics/$fileName,dir-mu:$mu" ]
+        then 
+            echo "IndriRunQuery -index=$base/indexes/biocaddie_all -rule=method:dir,mu:$mu -trecFormat $file > output/fdm/$col/$topics/$fileName,dir-mu:$mu"
+        fi 
     done
 done
 
