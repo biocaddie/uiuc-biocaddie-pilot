@@ -12,8 +12,8 @@ RUN   apt-get update -y && \
          zlib1g \
          zlib1g-dev &&  \
       cd /usr/local/src/ && \
-      wget https://sourceforge.net/projects/lemur/files/lemur/indri-5.11/indri-5.11.tar.gz/download -O indri-5.11.tar.gz && \
-      tar xvfz indri-5.11.tar.gz && cd indri-5.11 &&   \
+      wget https://sourceforge.net/projects/lemur/files/lemur/indri-5.8/indri-5.8.tar.gz/download -O indri-5.8.tar.gz && \
+      tar xvfz indri-5.8.tar.gz && cd indri-5.8 &&   \
       ./configure --enable-java --with-javahome=/usr/lib/jvm/java-8-openjdk-amd64 && \
       make && make install && \
       cd /usr/local/src/ && \ 
