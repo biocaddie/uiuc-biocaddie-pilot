@@ -1,0 +1,11 @@
+<parameters>
+  <index>/data/bioCaddie/indexes/biocaddie_all.krovetz</index>
+  <indexType>indri</indexType>
+  <corpus>
+    <path>/data/willis8/bioCaddie/data/biocaddie_all.txt.gz</path>
+    <class>trectext</class>
+  </corpus>
+  <stemmer>
+   <name>krovetz</name>
+  </stemmer>
+</parameters>
