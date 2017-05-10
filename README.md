@@ -20,15 +20,15 @@ The following instructions assume an Ubuntu system running as root user:
 apt-get update
 apt-get install openjdk-8-jdk-headless maven
 apt-get install r-base
-apt-get install build-essential parallel vim wget zlibc zlib1g zlib1g-dev
+apt-get install build-essential git parallel vim wget zlibc zlib1g zlib1g-dev
 ```
 
 Build and install Indri:
 ```bash
 cd /usr/local/src
-wget https://sourceforge.net/projects/lemur/files/lemur/indri-5.11/indri-5.11.tar.gz/download -O indri-5.11.tar.gz
-tar xvfz indri-5.11.tar.gz
-cd indri-5.11
+wget https://sourceforge.net/projects/lemur/files/lemur/indri-5.8/indri-5.8.tar.gz/download -O indri-5.8.tar.gz
+tar xvfz indri-5.8.tar.gz
+cd indri-5.8
 ./configure --enable-java --with-javahome=/usr/lib/jvm/java-8-openjdk-amd64
 make 
 make install
@@ -48,7 +48,7 @@ make install
 Instead of installing the prerequisites on your system, the provided Docker image contains all of the required dependencies. The following example assumes that you've downloaded the BioCADDIE benchmark data to /data/biocaddie.
 
 ```bash
-docker run -it /data/biocaddie:/data/biocaddie ndslabs/indri bash
+docker run -it -v /data/biocaddie:/data/biocaddie ndslabs/indri bash
 ```
 
 ## Clone this repository and build artifacts
@@ -57,10 +57,11 @@ Download and install the ir-tools and indri libraries (Note: we're working to [a
 ```bash
 wget https://github.com/nds-org/biocaddie/releases/download/v0.1/ir-utils-0.0.1-SNAPSHOT.jar
 mvn install:install-file -Dfile=ir-utils-0.0.1-SNAPSHOT.jar -DgroupId=edu.gslis -DartifactId=ir-utils -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
-mvn install:install-file -Dfile=/usr/local/share/indri/indri.jar -DgroupId=indri -DartifactId=indri -Dversion=5.11 -Dpackaging=jar
+mvn install:install-file -Dfile=/usr/local/src/indri-5.11/swig/src/java/indri.jar -DgroupId=indri -DartifactId=indri -Dversion=5.11 -Dpackaging=jar
 ```
 
 ```bash
+cd ~
 git clone https://github.com/nds-org/biocaddie
 cd biocaddie
 mvn install
@@ -85,6 +86,7 @@ This section describes the steps to repeat our 2016 BioCADDIE challenge submissi
 Download the [BioCADDIE benchmark collection in JSON format](https://biocaddie.org/sites/default/files/update_json_folder.zip).
 ```bash
 mkdir -p /data/biocaddie/data
+cd /data/biocaddie/data
 wget https://biocaddie.org/sites/default/files/update_json_folder.zip
 ```
 
@@ -94,25 +96,25 @@ cd ~/biocaddie
 scripts/dats2trec.sh
 ```
 
-This converts the benchmark data to trectext format.  This produces a file ``/data/biocaddie/data/biocaddie_all.txt``. You can remove the original benchmark data, if desired.
-
-You may see the following error, which is expected:
+Note: You may see the following error, which is expected:
 ```bash
 java.lang.ClassCastException: com.google.gson.JsonNull cannot be cast to com.google.gson.JsonObject
 	at edu.gslis.biocaddie.util.DATSToTrecText.main(DATSToTrecText.java:61)
 ```
 
+This converts the benchmark data to trectext format.  This produces a file ``/data/biocaddie/data/biocaddie_all.txt``. You can remove the original benchmark data, if desired.
+
 ### Create the biocaddie index
 
 Use ``IndriBuildIndex`` to build the ``biocaddie_all`` index (customize paths as needed):
 ```bash
-mkdir /data/biocaddie/index
+mkdir -p /data/biocaddie/indexes
 cd ~/biocaddie
 IndriBuildIndex index/build_index.biocaddie.params
 ```
 
 ### Qrels and queries
-The official BioCADDIE qrels and queries have been converted to Indri format in the ``qrels`` and ``queries`` directories.  We provide both the original training queries and final test queries and qrels, as well as combined sets for ongoing research.  We also provide the original official queries as well as stopped and manually shortened versions. We only use the original queries in our official submissions, but the shortened queries are used for our primarily evaluation.
+The official BioCADDIE qrels and queries have been converted to Indri format in the ``qrels`` and ``queries`` directories.  We provide both the original training queries and final test queries and qrels, as well as combined sets for ongoing research.  We also provide the original official queries as well as stopped and manually shortened versions. We only use the original queries in our official submissions, but the shortened queries are currently used for our primarily evaluation.
 
 ## Baseline models
 We provide several bash scripts to sweep various Indri baseline model parameters:
@@ -121,18 +123,21 @@ We provide several bash scripts to sweep various Indri baseline model parameters
 * ``okapi.sh``: Okapi-BM25
 * ``rm3.sh``:  Relevance models with original query interpolation
 * ``tfdf.sh``: Indri's default tfidf baseline
+* ``tfdfexp.sh``: Indri's tfidf baseline with expansion 
 * ``two.sh``: Query-likelihood with two-stage smoothing
 
-To run these scripts: 
+To run these scripts using GNU Parallel: 
 ```bash
-baselines/<model>.sh <topics> <collection>
+baselines/<model>.sh <topics> <collection> | parallel -j 20 bash -c "{}"
 ```
 
 Where ``<topics>`` is one of ``short, stopped, orig`` and collection is one of ``train, test, combined``. For example:
+```bash
+baselines/dir.sh short combined | parallel -j 20 bash -c "{}"
+```
 
-``scripts/<model>.sh short combined``
+This will produce an output directory ``output/dir/combined/short`` containing one output file per parameter combination in TREC format.
 
-This will produce an output directory ``output/model/combined/short`` containing one output file per parameter combination in TREC format.
 
 ## Cross-validation
 
@@ -173,16 +178,30 @@ This describes the process for building and running the PubMed expansion models.
 ### Converting PubMed data to trectext
 
 Download the PubMed oa_bulk datasets to ``/data/pubmed/oa_bulk``:
-* ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.0-9A-B.txt.tar.gz
-* ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.C-H.txt.tar.gz
-* ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.I-N.txt.tar.gz
-* ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.O-Z.txt.tar.gz
 
-Run the ``scripts/pmc2trec.sh``. This produces output in ``/data/pubmed/trecText/``
+```bash
+mkdir -p /data/pubmed/oa_bulk
+cd /data/pubmed/oa_bulk
+wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.0-9A-B.txt.tar.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.C-H.txt.tar.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.I-N.txt.tar.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.O-Z.txt.tar.gz
+```
+
+```bash
+cd ~/biocaddie
+scripts/pmc2trec.sh
+```
+
+This produces output in ``/data/pubmed/trecText/`` containing the TREC-formatted documents.
 
 ### Create the pubmed index
 
-``IndriBuildIndex index/build_index.pubmed.params``
+```bash
+mkdir -p /data/pubmed/indexes
+cd ~/biocaddie
+IndriBuildIndex index/build_index.pubmed.params``
+```
 
 This will create an Indri index in ``/data/pubmed/indexes/pubmed``.
 
@@ -205,30 +224,38 @@ pubmed/runqueries.sh short combined | parallel -j 20 bash -c "{}"
 ```
 
 
-
-## Expansion with Wikipedia
-
-This section assumes that you have an existing Wikipedia index under ``/data/wikipedia/indexes/20150901/index/``. TODO: Need to add instructions for building the Wikipedia index:
-
-Create the RM expanded queries:
-```bash
-wikipedia/genrm3.sh short combined
-```
-This will generate a set of expanded queries (mu=2500) under ``queries/wikipedia/``. Now run the queries against the BioCADDIE index:
-```bash
-wikipedia/runqueries.sh short combined | parallel -j 20 bash -c "{}"
-```
-
-
-## Using GNU parallel
-
-Several of these models (rm3, pubmed, wikipedia, sdm) benefit from parallelization, which can easily be implemented using [GNU parallel](https://www.gnu.org/software/parallel/. For example:
-
-```bash
-baselines/rm3.sh short combined | parallel -j 20 bash -c "{}"
-pubmed/runqueries.sh short combined | parallel -j 10 bash -c "{}"
-```
-
 ## Re-scoring using source priors
 
-Coming soon.
+These scripts will re-score an initial retrieval using the priors described in the paper.
+
+### Prior 1: Using training data
+
+First, get the repository for each qrel:
+```bash
+cd ~/biocaddie
+scripts/repo.sh > /data/biocaddie/data/biocaddie-doc-repo.out
+```
+
+Next, rescore an initial retrieval:
+```bash
+priors/rescore1.sh <input> <output>
+```
+
+For example
+```bash
+priors/rescore1.sh output/dir/combined/short output/dir-prior1/combined/short
+```
+
+
+
+### Prior 2: Pseudo-feedback
+Rescore an initial retrieval:
+```bash
+priors/rescore2.sh <input> <output>
+```
+
+For example
+```bash
+priors/rescore2.sh output/dir/combined/short output/dir-prior2/combined/short
+```
+
