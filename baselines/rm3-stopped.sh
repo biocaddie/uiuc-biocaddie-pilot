@@ -14,13 +14,13 @@ col=$2
 
 base=/data/biocaddie
 mkdir -p output/rm3-stopped/$col/$topics
-for mu in 100 250 500 750 1000 2000 3000 
+for mu in 50 250 500 1000 2500 5000 10000
 do
-   for fbTerms in 10 25 50 75 100
-   do 
-      for fbDocs in 10 25 50 75 100
+   for fbTerms in 5 10 20 50
+   do
+      for fbDocs in 5 10 20 50
       do
-         for fbOrigWeight in  0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+         for fbOrigWeight in  0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
          do
              echo "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:dir,mu:$mu -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight $base/queries/queries.$col.$topics data/stoplist.indri.params > output/rm3-stopped/$col/$topics/mu=$mu:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out"
          done
