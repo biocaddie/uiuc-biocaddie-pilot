@@ -2,8 +2,9 @@ FROM ubuntu:xenial
 
 RUN   apt-get update -y && \
       apt-get install -y build-essential \
+         git \
          maven \
-         openjdk-8-jre-headless \
+         openjdk-8-jdk-headless \
          parallel \
          r-base \
          vim \
