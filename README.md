@@ -4,9 +4,8 @@ This repository contains the code used in the NDS/uiucGSLIS submission to the 20
 
 ## Prerequisites
 
-* BioCADDIE Challenge benchmark data: https://biocaddie.org/benchmark-data assumed to be in ``/data/biocaddie/data``.
-* Indri 5.11 with JNI support (liblemur.so, liblemur_jni.so, libindri.so, libindri_jni.so)
-* Java 1.8
+* Indri 5.8 with JNI support (liblemur.so, liblemur_jni.so, libindri.so, libindri_jni.so)
+* Java 1.8 (JDK) with Maven
 * R
 
 This submission relies on the [ir-tools](https://github.com/uiucGSLIS/ir-tools) framework maintained by Miles Efron's lab at the University of Illinois at Urbana-Champaign.
