@@ -1,8 +1,9 @@
 # Convert PMC OA data to TREC-text format
 
-for gzfile in `ls /data0/pubmed/oa_bulk/*gz`
+mkdir -p /data/pubmed/trecText
+for gzfile in `ls /data/pubmed/oa_bulk/*gz`
 do
    file=`basename $gzfile .tar.gz`
-   ./run.sh edu.gslis.biocaddie.util.PMCToTrecText -input $gzfile -output /data0/pubmed/trecText/$file &
-   #gzip /data0/pubmed/trecText/$file
+   scripts/run.sh edu.gslis.biocaddie.util.PMCToTrecText -input $gzfile -output /data/pubmed/trecText/$file
+   gzip /data/pubmed/trecText/$file
 done
