@@ -121,8 +121,10 @@ public class GetFeedbackQueries {
 	        rmVector = cleanModel(rmVector);
 	        rmVector.clip(fbTerms);
 	        rmVector.normalize();
+                FeatureVector queryVector = query.getFeatureVector();
+                queryVector.normalize();
 	        FeatureVector feedbackVector =
-	        		FeatureVector.interpolate(query.getFeatureVector(), rmVector, rmLambda);
+	        		FeatureVector.interpolate(queryVector, rmVector, rmLambda);
 
 	        
 	        outputWriter.write("<query>\n");
