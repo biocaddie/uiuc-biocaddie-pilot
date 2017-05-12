@@ -15,7 +15,7 @@ col=$2
 base=/data/biocaddie
 mkdir -p output/pubmed/$col/$topics
 mkdir -p queries/pubmed/$col/$topics
-#for mu in 100 500 1000 2500
+#for mu in 50 250 500 1000 2500 5000 10000
 #do
 mu=2500
    for fbTerms in 5 10 20 50
