@@ -12,20 +12,21 @@ if [ -z "$2" ]; then
 fi
 col=$2
 
-base=/data/bioCaddie
+base=/data/biocaddie
 mkdir -p output/wikipedia/$col/$topics
 mkdir -p queries/wikipedia/$col/$topics
-for mu in 100 500 1000 2500
-do
+#for mu in 50 250 500 1000 2500 5000 10000
+#do
+mu=2500
    for fbTerms in 5 10 20 50
    do
       for fbDocs in 5 10 20 50 
       do
-         for fbOrigWeight in  0.1 0.3 0.5 0.7 0.9
+         for fbOrigWeight in  0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
          do
             scripts/run.sh edu.gslis.biocaddie.util.GetFeedbackQueries -input $base/queries/queries.$col.$topics -output queries/wikipedia/$col/$topics/queries.mu:$mu,fbTerms:$fbTerms,fbDocs:$fbDocs,fbOrigWeight:$fbOrigWeight -index /data/wikipedia/indexes/20150901/index -fbDocs $fbDocs -fbTerms $fbTerms -rmLambda $fbOrigWeight -maxResults $fbDocs -stoplist data/stoplist.all -mu $mu
          done
       done
    done
-done
+#done
 

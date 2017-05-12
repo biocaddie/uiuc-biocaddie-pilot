@@ -17,7 +17,7 @@ base=/data/biocaddie
 mkdir -p output/fdm/$col/$topics
 find queries/fdm/$col/$topics -type f | while read file
 do
-    for mu in 100 500 1000 2500
+    for mu in 50 250 500 1000 2500 5000 10000
     do
         fileName=`basename $file`
         if [ ! -f "output/fdm/$col/$topics/$fileName,dir-mu:$mu" ]

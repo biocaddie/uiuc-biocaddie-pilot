@@ -17,7 +17,7 @@ base=/data/biocaddie
 mkdir -p output/wikipedia/$col/$topics
 find queries/wikipedia/$col/$topics -type f | while read file
 do
-    for mu in 100 500 1000 2500
+    for mu in 50 250 500 1000 2500 5000 10000
     do
         fileName=`basename $file`
         echo "IndriRunQuery -index=$base/indexes/biocaddie_all -rule=method:dir,mu:$mu -trecFormat $file > output/wikipedia/$col/$topics/$fileName,dir-mu:$mu"
