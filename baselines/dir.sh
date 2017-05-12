@@ -14,7 +14,8 @@ col=$2
 
 base=/data/biocaddie
 mkdir -p output/dir/$col/$topics
-for mu in 100 250 500 750 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000
+#for mu in 100 250 500 750 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000
+for mu in 50 100 250 500 1000 2500 5000 10000
 do
    echo "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:dir,mu:$mu queries/queries.$col.$topics > output/dir/$col/$topics/$mu.out"
 done
