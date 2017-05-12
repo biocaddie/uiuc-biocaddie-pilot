@@ -12,7 +12,7 @@ if [ -z "$2" ]; then
 fi
 col=$2
 
-base=/data/bioCaddie
+base=/data/biocaddie
 
 mkdir -p output/sdm/$col/$topics
 find queries/sdm/$col/$topics -type f | while read file
