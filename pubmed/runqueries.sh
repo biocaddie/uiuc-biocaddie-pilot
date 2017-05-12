@@ -12,12 +12,12 @@ if [ -z "$2" ]; then
 fi
 col=$2
 
-base=/data/bioCaddie
+base=/data/biocaddie
 
 mkdir -p output/pubmed/$col/$topics
 find queries/pubmed/$col/$topics -type f | while read file
 do
-    for mu in 100 500 1000 2500
+    for mu in 50 250 500 1000 2500 5000 10000
     do
         fileName=`basename $file`
         echo "IndriRunQuery -index=$base/indexes/biocaddie_all -rule=method:dir,mu:$mu -trecFormat $file > output/pubmed/$col/$topics/$fileName,dir-mu:$mu"
