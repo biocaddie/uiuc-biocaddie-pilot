@@ -258,3 +258,18 @@ For example
 priors/rescore2.sh output/dir/combined/short output/dir-prior2/combined/short
 ```
 
+## Dependence model queries
+
+We've also included as a baseline Metlzer's sequential dependence model (SDM) and full dependence model (FDM) runs.
+
+Generate the SDM queries (uses ``dm.pl``). For example:
+```bash
+sdm/gensd.sh short combined
+```
+
+Run the queries, also sweeping the Dirichlet mu:
+```bash
+sdm/runsd.sh short combined | parallel -j 20 bash -c "{}"
+```
+
+You can also run the ``fd`` variants of these two scripts.
