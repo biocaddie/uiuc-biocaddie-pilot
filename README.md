@@ -273,3 +273,7 @@ sdm/runsd.sh short combined | parallel -j 20 bash -c "{}"
 ```
 
 You can also run the ``fd`` variants of these two scripts.
+
+For more information, see:
+Metzler, D. and Croft, W.B., [A Markov Random Field Model for Term Dependencies](http://dl.acm.org/citation.cfm?id=1076115), ACM SIGIR 2005.
+
