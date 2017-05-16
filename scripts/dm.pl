@@ -50,8 +50,7 @@ while (<F>) {
   if ($_ =~ m/<text>([^<]*)<\/text>/) {
       $query=$1;
       $query=~ s/\./ /g;
-      #print "<text>". formulate_query(lc($query), "sd", $w1, $w2, $w3) . "</text>\n";
-      print "<text>". formulate_query(lc($query), "fd", $w1, $w2, $w3) . "</text>\n";
+      print "<text>". formulate_query(lc($query), $model, $w1, $w2, $w3) . "</text>\n";
   }
   else {
       print "$_\n";
