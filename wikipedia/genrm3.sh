@@ -24,7 +24,7 @@ mu=2500
       do
          for fbOrigWeight in  0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
          do
-            scripts/run.sh edu.gslis.biocaddie.util.GetFeedbackQueries -input $base/queries/queries.$col.$topics -output queries/wikipedia/$col/$topics/queries.mu:$mu,fbTerms:$fbTerms,fbDocs:$fbDocs,fbOrigWeight:$fbOrigWeight -index /data/wikipedia/indexes/20150901/index -fbDocs $fbDocs -fbTerms $fbTerms -rmLambda $fbOrigWeight -maxResults $fbDocs -stoplist data/stoplist.all -mu $mu
+            scripts/run.sh edu.gslis.biocaddie.util.GetFeedbackQueries -input queries/queries.$col.$topics -output queries/wikipedia/$col/$topics/queries.mu:$mu,fbTerms:$fbTerms,fbDocs:$fbDocs,fbOrigWeight:$fbOrigWeight -index /data/wikipedia/indexes/20150901/index -fbDocs $fbDocs -fbTerms $fbTerms -rmLambda $fbOrigWeight -maxResults $fbDocs -stoplist data/stoplist.all -mu $mu
          done
       done
    done
