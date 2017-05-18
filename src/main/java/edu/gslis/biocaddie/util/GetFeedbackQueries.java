@@ -93,44 +93,28 @@ public class GetFeedbackQueries {
 		while(queryIterator.hasNext()) {
 			GQuery query = queryIterator.next();
 			
-			SearchHits results = index.runQuery(query,  maxResults);			
-	        docScorer.setQuery(query);
-	             
-	        Iterator<SearchHit> it = results.iterator();
-	        SearchHits rescored = new SearchHits();
-	        while (it.hasNext()) {
-	            SearchHit hit = it.next();
-	            double score = docScorer.score(hit);
-	            hit.setScore(score);
-	            if (score == Double.NaN || score == Double.NEGATIVE_INFINITY) {
-	                System.err.println("Problem with score for " + query.getText() + "," + hit.getDocno() + "," + score);
-	            } else if (score != Double.NEGATIVE_INFINITY) {
-	                rescored.add(hit);
-	            }
-	        }
-			
-	        // Feedback model
-	        FeedbackRelevanceModel rm3 = new FeedbackRelevanceModel();
-	        rm3.setDocCount(fbDocs);
-	        rm3.setTermCount(fbTerms);
-	        rm3.setIndex(index);
-	        rm3.setStopper(stopper);
-	        rm3.setRes(rescored);
-	        rm3.build();
-	        FeatureVector rmVector = rm3.asFeatureVector();
-	        rmVector = cleanModel(rmVector);
-	        rmVector.clip(fbTerms);
-	        rmVector.normalize();
-                FeatureVector queryVector = query.getFeatureVector();
-                queryVector.normalize();
-	        FeatureVector feedbackVector =
+	        	// Feedback model
+	        	FeedbackRelevanceModel rm3 = new FeedbackRelevanceModel();
+   			rm3.setOriginalQuery(query);
+	        	rm3.setDocCount(fbDocs);
+	        	rm3.setTermCount(fbTerms);
+	        	rm3.setIndex(index);
+	        	rm3.setStopper(stopper);
+	        	rm3.build();
+	        	FeatureVector rmVector = rm3.asFeatureVector();
+	        	rmVector = cleanModel(rmVector);
+	        	rmVector.clip(fbTerms);
+	        	rmVector.normalize();
+                	FeatureVector queryVector = query.getFeatureVector();
+                	queryVector.normalize();
+	        	FeatureVector feedbackVector =
 	        		FeatureVector.interpolate(queryVector, rmVector, rmLambda);
 
 	        
-	        outputWriter.write("<query>\n");
-	        outputWriter.write("   <number>" + query.getTitle() + "</number>\n");
-	        outputWriter.write("   <text>" + toIndri(feedbackVector) + "</text>\n");
-	        outputWriter.write("</query>\n");
+	        	outputWriter.write("<query>\n");
+	        	outputWriter.write("   <number>" + query.getTitle() + "</number>\n");
+	        	outputWriter.write("   <text>" + toIndri(feedbackVector) + "</text>\n");
+	        	outputWriter.write("</query>\n");
 	        
 			/*
 			<parameters>
