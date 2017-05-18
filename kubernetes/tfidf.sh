@@ -24,6 +24,7 @@ do
                  | sed -e "s#{{[ ]*name[ ]*}}#$topics-$col-tfidf-$k1-$b#g" \
                  | sed -e "s#{{[ ]*index[ ]*}}#$base/indexes/biocaddie_all/#" \
                  | sed -e "s#{{[ ]*queries[ ]*}}#$src_base/queries/queries.$col.$topics#" \
+                 | sed -e "s#{{[ ]*stoplist[ ]*}}##" \
                  | sed -e "s#{{[ ]*output[ ]*}}#$src_base/output/tfidf/$col/$topics/k1=$k1:b=$b.out#" \
                  | sed -e "s#{{[ ]*args[ ]*}}#-baseline=tfidf,k1:$k1,b:$b#" \
                  | kubectl create -f -

@@ -22,6 +22,7 @@ do
           | sed -e "s#{{[ ]*name[ ]*}}#$topics-$col-jm-$lambda#g" \
           | sed -e "s#{{[ ]*index[ ]*}}#$base/indexes/biocaddie_all/#" \
           | sed -e "s#{{[ ]*queries[ ]*}}#$src_base/queries/queries.$col.$topics#" \
+          | sed -e "s#{{[ ]*stoplist[ ]*}}##" \
           | sed -e "s#{{[ ]*output[ ]*}}#$src_base/output/jm/$col/$topics/$lambda.out#" \
           | sed -e "s#{{[ ]*args[ ]*}}#-rule=method:jm,lambda:$lambda#" \
           | kubectl create -f -

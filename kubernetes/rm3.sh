@@ -28,6 +28,7 @@ do
                  | sed -e "s#{{[ ]*name[ ]*}}#$topics-$col-rm3-$mu-$fbDocs-$fbTerms-$fbOrigWeight#g" \
                  | sed -e "s#{{[ ]*index[ ]*}}#$base/indexes/biocaddie_all/#" \
                  | sed -e "s#{{[ ]*queries[ ]*}}#$src_base/queries/queries.$col.$topics#" \
+                 | sed -e "s#{{[ ]*stoplist[ ]*}}##" \
                  | sed -e "s#{{[ ]*output[ ]*}}#$src_base/output/rm3/$col/$topics/mu=$mu:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out#" \
                  | sed -e "s#{{[ ]*args[ ]*}}#-rule=method:dir,mu:$mu -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight#" \
                  | kubectl create -f -

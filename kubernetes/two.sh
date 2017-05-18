@@ -24,6 +24,7 @@ do
           | sed -e "s#{{[ ]*name[ ]*}}#$topics-$col-two-$mu-$lambda#g" \
           | sed -e "s#{{[ ]*index[ ]*}}#$base/indexes/biocaddie_all/#" \
           | sed -e "s#{{[ ]*queries[ ]*}}#$src_base/queries/queries.$col.$topics#" \
+          | sed -e "s#{{[ ]*stoplist[ ]*}}##" \
           | sed -e "s#{{[ ]*output[ ]*}}#$src_base/output/two/$col/$topics/mu=$mu:lambda=$lambda.out#" \
           | sed -e "s#{{[ ]*args[ ]*}}#-rule=method:two,mu:$mu,lambda:$lambda#" \
           | kubectl create -f -

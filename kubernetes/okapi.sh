@@ -26,6 +26,7 @@ do
              | sed -e "s#{{[ ]*name[ ]*}}#$topics-$col-okapi-$k1-$k3-$b#g" \
              | sed -e "s#{{[ ]*index[ ]*}}#$base/indexes/biocaddie_all/#" \
              | sed -e "s#{{[ ]*queries[ ]*}}#$src_base/queries/queries.$col.$topics#" \
+             | sed -e "s#{{[ ]*stoplist[ ]*}}##" \
              | sed -e "s#{{[ ]*output[ ]*}}#$src_base/output/okapi/$col/$topics/k1=$k1:k3=$k3:b$b.out#" \
              | sed -e "s#{{[ ]*args[ ]*}}#-baseline=okapi,k1:$k1,k3:$k3,b:$b#" \
              | kubectl create -f -
