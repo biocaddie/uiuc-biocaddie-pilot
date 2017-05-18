@@ -1,18 +1,31 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: dir-50
+  name: {{ name }}
 spec:
   template:
     metadata:
-      name: dir-50
+      name: {{ name }}
     spec:
       containers:
       - name: indri
         image: ndslabs/indri
-        command: [ "IndriRunQuery", "-index=$base/indexes/biocaddie_all/", "-trecFormat=true", "-rule=method:dir,mu:50", "queries/queries.combined.short" ]
+        imagePullPolicy: IfNotPresent
+        command: [ "bash" ]
+        args: [ "-c", "IndriRunQuery -index=$INDEX_PATH -trecFormat=$TREC_FORMAT $INDRI_ARGS $QUERIES_FILE > $OUTPUT_FILE" ]
+        env:
+        - name: INDEX_PATH
+          value: "{{ index }}"
+        - name: OUTPUT_FILE
+          value: "{{ output }}"
+        - name: QUERIES_FILE
+          value: "{{ queries }}"
+        - name: TREC_FORMAT
+          value: "true" 
+        - name: INDRI_ARGS
+          value: "{{ args }}"
         volumeMounts:
-        - mountPath: /biocaddie
+        - mountPath: /root/biocaddie
           name: output
         - mountPath: /data
           name: input
