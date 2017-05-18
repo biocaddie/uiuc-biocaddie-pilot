@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dir-50
+spec:
+  template:
+    metadata:
+      name: dir-50
+    spec:
+      containers:
+      - name: indri
+        image: ndslabs/indri
+        command: [ "IndriRunQuery", "-index=$base/indexes/biocaddie_all/", "-trecFormat=true", "-rule=method:dir,mu:50", "queries/queries.combined.short" ]
+        volumeMounts:
+        - mountPath: /biocaddie
+          name: output
+        - mountPath: /data
+          name: input
+      volumes:
+      - name: output
+        hostPath:
+          path: /home/ubuntu/biocaddie
+      - name: input
+        hostPath:
+          path: /data
+      restartPolicy: Never
