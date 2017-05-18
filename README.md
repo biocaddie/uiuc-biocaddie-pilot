@@ -56,7 +56,7 @@ Download and install the ir-tools and indri libraries (Note: we're working to [a
 ```bash
 wget https://github.com/nds-org/biocaddie/releases/download/v0.1/ir-utils-0.0.1-SNAPSHOT.jar
 mvn install:install-file -Dfile=ir-utils-0.0.1-SNAPSHOT.jar -DgroupId=edu.gslis -DartifactId=ir-utils -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
-mvn install:install-file -Dfile=/usr/local/src/indri-5.11/swig/src/java/indri.jar -DgroupId=indri -DartifactId=indri -Dversion=5.11 -Dpackaging=jar
+mvn install:install-file -Dfile=/usr/local/share/indri/indri.jar -DgroupId=indri -DartifactId=indri -Dversion=5.11 -Dpackaging=jar
 ```
 
 ```bash
