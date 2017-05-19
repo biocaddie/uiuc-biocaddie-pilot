@@ -1,0 +1,15 @@
+FROM ndslabs/indri
+
+RUN apt-get -qq update && \
+    apt-get -qq install \
+      redis-tools \
+      python \
+      python-pip
+
+RUN pip install redis
+
+ADD https://kubernetes.io/docs/tasks/job/fine-parallel-processing-work-queue/rediswq.py?raw=true ./rediswq.py
+COPY worker.py ./worker.py
+COPY queries /queries
+
+CMD [ "./worker.py" ]
