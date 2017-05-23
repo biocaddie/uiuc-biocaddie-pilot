@@ -46,7 +46,6 @@ do
    do
       for topic in $topics
       do
-         mkdir -p $src_base/output/$model/$col/$topic
          $src_base/kubernetes/$model.sh $topic $col 
       done
    done

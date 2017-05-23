@@ -23,17 +23,18 @@ do
       do
          for fbOrigWeight in  0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
          do
-#             echo "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:dir,mu:$mu -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight $base/queries/queries.$col.$topics > output/rm3/$col/$topics/mu=$mu:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out"
-             cat kubernetes/job.yaml \
-                 | sed -e "s#{{[ ]*name[ ]*}}#$topics-$col-rm3-$mu-$fbDocs-$fbTerms-$fbOrigWeight#g" \
-                 | sed -e "s#{{[ ]*index[ ]*}}#$base/indexes/biocaddie_all/#" \
-                 | sed -e "s#{{[ ]*queries[ ]*}}#$src_base/queries/queries.$col.$topics#" \
-                 | sed -e "s#{{[ ]*stoplist[ ]*}}##" \
-                 | sed -e "s#{{[ ]*output[ ]*}}#$src_base/output/rm3/$col/$topics/mu=$mu:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out#" \
-                 | sed -e "s#{{[ ]*args[ ]*}}#-rule=method:dir,mu:$mu -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight#" \
-                 | kubectl create -f -
+             redis-cli -h ${REDIS_SERVICE_HOST:-localhost} rpush "rm3/$col/$topics" "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:dir,mu:$mu -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight queries/queries.$col.$topics > output/rm3/$col/$topics/mu=$mu:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out"
          done
       done
    done
 done
 
+
+# Then start a worker job to execute
+cat kubernetes/worker.yaml \
+          | sed -e "s#{{[ ]*name[ ]*}}#rm3-$col-$topics#g" \
+          | sed -e "s#{{[ ]*queue[ ]*}}#rm3/$col/$topics#" \
+          | kubectl create -f -
+
+
+echo 'Job started - to run multiple workers for this Job in parallel, use "kubectl scale"'
