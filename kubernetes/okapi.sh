@@ -12,6 +12,8 @@ if [ -z "$2" ]; then
 fi
 col=$2
 
+QUEUE_NAME="okapi-$col-$topics"
+
 # NOTE: These are paths internal to the container
 base=/data/biocaddie
 src_base=/root/biocaddie
@@ -21,16 +23,16 @@ do
    do 
       for k3 in 1.0 1.2 1.5 1.7 2.0
       do 
-#         echo "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -baseline=okapi,k1:$k1,k3:$k3,b:$b queries/queries.$col.$topics > output/okapi/$col/$topics/k1=$k1:k3=$k3:b=$b.out"
-         cat kubernetes/job.yaml \
-             | sed -e "s#{{[ ]*name[ ]*}}#$topics-$col-okapi-$k1-$k3-$b#g" \
-             | sed -e "s#{{[ ]*index[ ]*}}#$base/indexes/biocaddie_all/#" \
-             | sed -e "s#{{[ ]*queries[ ]*}}#$src_base/queries/queries.$col.$topics#" \
-             | sed -e "s#{{[ ]*stoplist[ ]*}}##" \
-             | sed -e "s#{{[ ]*output[ ]*}}#$src_base/output/okapi/$col/$topics/k1=$k1:k3=$k3:b$b.out#" \
-             | sed -e "s#{{[ ]*args[ ]*}}#-baseline=okapi,k1:$k1,k3:$k3,b:$b#" \
-             | kubectl create -f -
+         redis-cli -h ${REDIS_SERVICE_HOST:-localhost} rpush "${QUEUE_NAME}" "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -baseline=okapi,k1:$k1,k3:$k3,b:$b queries/queries.$col.$topics > output/okapi/$col/$topics/k1=$k1:k3=$k3:b=$b.out"
       done
    done
 done
 
+
+# Then start a worker job to execute
+cat kubernetes/worker.yaml \
+          | sed -e "s#{{[ ]*name[ ]*}}#${QUEUE_NAME}#g" \
+          | kubectl create -f -
+
+
+echo 'Job started - to run multiple workers for this Job in parallel, use "kubectl scale"'

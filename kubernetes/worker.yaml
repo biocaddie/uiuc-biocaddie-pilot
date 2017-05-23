@@ -14,7 +14,7 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: REDIS_SERVICE_QUEUE
-          value: "{{ queue }}"
+          value: "{{ name }}"
         volumeMounts:
         - mountPath: /queries
           name: queries

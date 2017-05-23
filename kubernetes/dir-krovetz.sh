@@ -12,18 +12,22 @@ if [ -z "$2" ]; then
 fi
 col=$2
 
+QUEUE_NAME="dir-krovetz-$col-$topics"
+
 # NOTE: These are paths internal to the container
 base=/data/biocaddie
 src_base=/root/biocaddie
 for mu in 50 250 500 1000 2500 5000 10000
 do
-#   IndriRunQuery -index=$base/indexes/biocaddie_all.krovetz/ -trecFormat=true -rule=method:dir,mu:$mu queries/queries.$col.$topics > output/dir-krovetz/$col/$topics/$mu.out
-   cat kubernetes/job.yaml \
-          | sed -e "s#{{[ ]*name[ ]*}}#$topics-$col-dir-krovetz-$mu#g" \
-          | sed -e "s#{{[ ]*index[ ]*}}#$base/indexes/biocaddie_all.krovetz/#" \
-          | sed -e "s#{{[ ]*queries[ ]*}}#$src_base/queries/queries.$col.$topics#" \
-          | sed -e "s#{{[ ]*stoplist[ ]*}}##" \
-          | sed -e "s#{{[ ]*output[ ]*}}#$src_base/output/dir-krovetz/$col/$topics/$mu.out#" \
-          | sed -e "s#{{[ ]*args[ ]*}}#-rule=method:dir,mu:$mu#" \
-          | kubectl create -f -
+   redis-cli -h ${REDIS_SERVICE_HOST} "${QUEUE_NAME}" "IndriRunQuery -index=$base/indexes/biocaddie_all.krovetz/ -trecFormat=true -rule=method:dir,mu:$mu queries/queries.$col.$topics > output/dir-krovetz/$col/$topics/$mu.out"
 done
+
+
+
+# Then start a worker job to execute
+cat kubernetes/worker.yaml \
+          | sed -e "s#{{[ ]*name[ ]*}}#${QUEUE_NAME}#g" \
+          | kubectl create -f -
+
+
+echo 'Job started - to run multiple workers for this Job in parallel, use "kubectl scale"'

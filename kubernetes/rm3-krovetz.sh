@@ -12,6 +12,8 @@ if [ -z "$2" ]; then
 fi
 col=$2
 
+QUEUE_NAME="rm3-stopped-$col-$topics"
+
 # NOTE: These are paths internal to the container
 base=/data/biocaddie
 src_base=/root/biocaddie
@@ -23,17 +25,17 @@ do
       do
          for fbOrigWeight in  0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
          do
-#             echo "IndriRunQuery -index=$base/indexes/biocaddie_all.krovetz/ -trecFormat=true -rule=method:dir,mu:$mu -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight $base/queries/queries.$col.$topics > output/rm3-krovetz/$col/$topics/mu=$mu:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out"
-             cat kubernetes/job.yaml \
-                 | sed -e "s#{{[ ]*name[ ]*}}#$topics-$col-rm3-krovetz-$mu-$fbDocs-$fbTerms-$fbOrigWeight#g" \
-                 | sed -e "s#{{[ ]*index[ ]*}}#$base/indexes/biocaddie_all.krovetz/#" \
-                 | sed -e "s#{{[ ]*queries[ ]*}}#$src_base/queries/queries.$col.$topics#" \
-                 | sed -e "s#{{[ ]*stoplist[ ]*}}##" \
-                 | sed -e "s#{{[ ]*output[ ]*}}#$src_base/output/rm3-krovetz/$col/$topics/mu=$mu:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out#" \
-                 | sed -e "s#{{[ ]*args[ ]*}}#-rule=method:dir,mu:$mu -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight#" \
-                 | kubectl create -f -
-
+             redis-cli -h ${REDIS_SERVICE_HOST} "${QUEUE_NAME}" "IndriRunQuery -index=$base/indexes/biocaddie_all.krovetz/ -trecFormat=true -rule=method:dir,mu:$mu -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight $base/queries/queries.$col.$topics > output/rm3-krovetz/$col/$topics/mu=$mu:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out"
          done
       done
    done
 done
+
+
+# Then start a worker job to execute
+cat kubernetes/worker.yaml \
+          | sed -e "s#{{[ ]*name[ ]*}}#${QUEUE_NAME}#g" \
+          | kubectl create -f -
+
+
+echo 'Job started - to run multiple workers for this Job in parallel, use "kubectl scale"'

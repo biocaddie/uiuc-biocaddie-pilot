@@ -12,18 +12,19 @@ if [ -z "$2" ]; then
 fi
 col=$2
 
+QUEUE_NAME="dir-$col-$topics"
+
 # NOTE: These are paths internal to the container
 base=/data/biocaddie
 src_base=/root/biocaddie
 for mu in 50 250 500 1000 2500 5000 10000
 do
-    redis-cli -h ${REDIS_SERVICE_HOST:-localhost} rpush "dir/$col/$topics" "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:dir,mu:$mu queries/queries.$col.$topics > output/dir/$col/$topics/$mu.out"
+    redis-cli -h ${REDIS_SERVICE_HOST:-localhost} rpush "${QUEUE_NAME}" "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:dir,mu:$mu queries/queries.$col.$topics > output/dir/$col/$topics/$mu.out"
 done
 
 # Then start a worker job to execute
 cat kubernetes/worker.yaml \
-          | sed -e "s#{{[ ]*name[ ]*}}#dir-$col-$topics#g" \
-          | sed -e "s#{{[ ]*queue[ ]*}}#dir/$col/$topics#" \
+          | sed -e "s#{{[ ]*name[ ]*}}#${QUEUE_NAME}#g" \
           | kubectl create -f -
 
 

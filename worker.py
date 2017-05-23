@@ -11,7 +11,7 @@ host = os.getenv("REDIS_SERVICE_HOST")
 queue = os.getenv("REDIS_SERVICE_QUEUE")
 
 # Ensure that our output folder exists
-output_dir='/output/' + queue
+output_dir='/output/' + queue.replace('-', '/')
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 

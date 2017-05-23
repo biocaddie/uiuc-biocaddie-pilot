@@ -12,6 +12,8 @@ if [ -z "$2" ]; then
 fi
 col=$2
 
+QUEUE_NAME="rm3-$col-$topics"
+
 # NOTE: These are paths internal to the container
 base=/data/biocaddie
 src_base=/root/biocaddie
@@ -23,7 +25,7 @@ do
       do
          for fbOrigWeight in  0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
          do
-             redis-cli -h ${REDIS_SERVICE_HOST:-localhost} rpush "rm3/$col/$topics" "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:dir,mu:$mu -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight queries/queries.$col.$topics > output/rm3/$col/$topics/mu=$mu:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out"
+             redis-cli -h ${REDIS_SERVICE_HOST:-localhost} rpush "${QUEUE_NAME}" "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:dir,mu:$mu -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight queries/queries.$col.$topics > output/rm3/$col/$topics/mu=$mu:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out"
          done
       done
    done
@@ -32,8 +34,7 @@ done
 
 # Then start a worker job to execute
 cat kubernetes/worker.yaml \
-          | sed -e "s#{{[ ]*name[ ]*}}#rm3-$col-$topics#g" \
-          | sed -e "s#{{[ ]*queue[ ]*}}#rm3/$col/$topics#" \
+          | sed -e "s#{{[ ]*name[ ]*}}#${QUEUE_NAME}#g" \
           | kubectl create -f -
 
 
