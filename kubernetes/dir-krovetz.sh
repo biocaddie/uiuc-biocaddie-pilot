@@ -16,10 +16,9 @@ QUEUE_NAME="dir-krovetz-$col-$topics"
 
 # NOTE: These are paths internal to the container
 base=/data/biocaddie
-src_base=/root/biocaddie
 for mu in 50 250 500 1000 2500 5000 10000
 do
-   redis-cli -h ${REDIS_SERVICE_HOST} "${QUEUE_NAME}" "IndriRunQuery -index=$base/indexes/biocaddie_all.krovetz/ -trecFormat=true -rule=method:dir,mu:$mu queries/queries.$col.$topics > output/dir-krovetz/$col/$topics/$mu.out"
+   redis-cli -h ${REDIS_SERVICE_HOST:-localhost} rpush "${QUEUE_NAME}" "IndriRunQuery -index=$base/indexes/biocaddie_all.krovetz/ -trecFormat=true -rule=method:dir,mu:$mu queries/queries.$col.$topics > output/dir-krovetz/$col/$topics/$mu.out"
 done
 
 

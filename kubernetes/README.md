@@ -115,7 +115,6 @@ job "dir-combined-short" created
 Job started - to run multiple workers for this Job in parallel, use "kubectl scale"
 ```
 
-## View Running Jobs
 The following command will list all existing jobs, along with their worker pods:
 ```bash
 ubuntu@integration-3:~/biocaddie$ kubectl get jobs,pods -a
@@ -143,6 +142,10 @@ po/two-combined-short-s5jn0     0/1       Completed   0          1d
 ```
 
 NOTE: including `-a` will also list `Completed` pods in the output.
+
+You can then use `kubectl logs -f <pod_name>` to view the logs of a `Running` or `Completed` worker pod.
+
+Once the job has completed, you will see the number of successful replicas under `kubectl get jobs` has been incremented. You should then be able to check the `output/` folder for the output of the baseline runs.
 
 ## Scaling Up a Job
 All jobs, by default, run 2 worker replicas to pull work out of the job queue in Redis.
@@ -187,4 +190,74 @@ We also provide a `run_all.sh` that has the capability to run multiple baselines
 For example, to run `dir.sh` and `jm.sh` against `combined`-`short` and `combined`-`orig`, you could use:
 ```bash
 ./kubernetes/run_all.sh "dir jm" "short orig" "combined"
+```
+
+For example:
+```bash
+ubuntu@integration-3:~/biocaddie$ ./kubernetes/run_all.sh "dir jm" "short orig" "combined"
+(integer) 1
+(integer) 2
+(integer) 3
+(integer) 4
+(integer) 5
+(integer) 6
+(integer) 7
+job "dir-combined-short" created
+Job started - to run multiple workers for this Job in parallel, use "kubectl scale"
+(integer) 1
+(integer) 2
+(integer) 3
+(integer) 4
+(integer) 5
+(integer) 6
+(integer) 7
+job "dir-combined-orig" created
+Job started - to run multiple workers for this Job in parallel, use "kubectl scale"
+(integer) 1
+(integer) 2
+(integer) 3
+(integer) 4
+(integer) 5
+(integer) 6
+(integer) 7
+(integer) 8
+(integer) 9
+(integer) 10
+(integer) 11
+job "jm-combined-short" created
+Job started - to run multiple workers for this Job in parallel, use "kubectl scale"
+(integer) 1
+(integer) 2
+(integer) 3
+(integer) 4
+(integer) 5
+(integer) 6
+(integer) 7
+(integer) 8
+(integer) 9
+(integer) 10
+(integer) 11
+job "jm-combined-orig" created
+Job started - to run multiple workers for this Job in parallel, use "kubectl scale"
+ubuntu@integration-3:~/biocaddie$ kubectl get jobs,pods
+NAME                        DESIRED   SUCCESSFUL   AGE
+jobs/dir-combined-orig      <none>    0            5s
+jobs/dir-combined-short     <none>    0            6s
+jobs/jm-combined-orig       <none>    0            5s
+jobs/jm-combined-short      <none>    0            5s
+jobs/rm3-combined-short     <none>    6            1d
+jobs/tfidf-combined-short   <none>    2            1d
+jobs/two-combined-short     <none>    2            1d
+
+NAME                          READY     STATUS              RESTARTS   AGE
+po/dir-combined-orig-5fkqm    0/1       ContainerCreating   0          5s
+po/dir-combined-orig-w5snl    0/1       ContainerCreating   0          5s
+po/dir-combined-short-536z9   0/1       ContainerCreating   0          6s
+po/dir-combined-short-lglwx   0/1       ContainerCreating   0          6s
+po/jm-combined-orig-cbb8t     0/1       ContainerCreating   0          5s
+po/jm-combined-orig-r47r6     0/1       ContainerCreating   0          5s
+po/jm-combined-short-2g0dw    0/1       ContainerCreating   0          5s
+po/jm-combined-short-f01f4    0/1       ContainerCreating   0          5s
+po/redis-dp58n                1/1       Running             0          5d
+po/temp-2077333550-cxl1g      1/1       Running             2          5d
 ```

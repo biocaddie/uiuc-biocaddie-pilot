@@ -16,10 +16,9 @@ QUEUE_NAME="jm-$col-$topics"
 
 # NOTE: These are paths internal to the container
 base=/data/biocaddie
-src_base=/root/biocaddie
 for lambda in 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
 do
-    redis-cli -h ${REDIS_SERVICE_HOST} "${QUEUE_NAME}" "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:jm,lambda:$lambda queries/queries.$col.$topics > output/jm/$col/$topics/lambda=$lambda"
+    redis-cli -h ${REDIS_SERVICE_HOST:-localhost} rpush "${QUEUE_NAME}" "IndriRunQuery -index=$base/indexes/biocaddie_all/ -trecFormat=true -rule=method:jm,lambda:$lambda queries/queries.$col.$topics > output/jm/$col/$topics/lambda=$lambda"
 done
 
 # Then start a worker job to execute
