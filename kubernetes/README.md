@@ -145,7 +145,28 @@ NOTE: including `-a` will also list `Completed` pods in the output.
 
 You can then use `kubectl logs -f <pod_name>` to view the logs of a `Running` or `Completed` worker pod.
 
-Once the job has completed, you will see the number of successful replicas under `kubectl get jobs` has been incremented. You should then be able to check the `output/` folder for the output of the baseline runs.
+Once the job has completed, you will see the number of successful replicas under `kubectl get jobs` has been incremented. You should then be able to check the `output/` folder for the output of the baseline runs:
+```bash
+ubuntu@integration-3:~/biocaddie$ du -h output/
+62M	output/tfidf/combined/short
+62M	output/tfidf/combined
+62M	output/tfidf
+50M	output/two/combined/short
+50M	output/two/combined
+50M	output/two
+4.4M	output/dir/combined/orig
+4.6M	output/dir/combined/short
+8.9M	output/dir/combined
+8.9M	output/dir
+6.7M	output/jm/combined/orig
+7.1M	output/jm/combined/short
+14M	output/jm/combined
+14M	output/jm
+800M	output/rm3/combined/short
+800M	output/rm3/combined
+800M	output/rm3
+934M	output/
+```
 
 ## Scaling Up a Job
 All jobs, by default, run 2 worker replicas to pull work out of the job queue in Redis.
