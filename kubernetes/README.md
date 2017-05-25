@@ -282,3 +282,11 @@ po/jm-combined-short-f01f4    0/1       ContainerCreating   0          5s
 po/redis-dp58n                1/1       Running             0          5d
 po/temp-2077333550-cxl1g      1/1       Running             2          5d
 ```
+
+# In Case of Failure
+The state of the framework can be reset with a few simple commands:
+```bash
+kubectl delete jobs --all                        # Stop all running jobs and clean up their worker pods
+redis-cli -h ${REDIS_SERVICE_HOST} flushall      # Clear out all work queues in Redis
+rm -rf output/*                                  # Delete existing output files
+```
