@@ -38,16 +38,19 @@
 #
 
 $file = $ARGV[0];
-$w1 = $ARGV[1];
-$w2 = $ARGV[2];
-$w3 = $ARGV[3];
+$model = $ARGV[1]; # sd or fd
+$w1 = $ARGV[2];
+$w2 = $ARGV[3];
+$w3 = $ARGV[4];
 
 open(F, $file);
 
 while (<F>) {
   chomp();
   if ($_ =~ m/<text>([^<]*)<\/text>/) {
-      print "<text>". formulate_query(lc($1), "sd", $w1, $w2, $w3) . "</text>\n";
+      $query=$1;
+      $query=~ s/\./ /g;
+      print "<text>". formulate_query(lc($query), $model, $w1, $w2, $w3) . "</text>\n";
   }
   else {
       print "$_\n";

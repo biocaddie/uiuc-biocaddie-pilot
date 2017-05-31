@@ -1,0 +1,23 @@
+<parameters>
+  <index>/data/pubmed/indexes/pubmed.krovetz</index>
+  <indexType>indri</indexType>
+  <corpus>
+    <path>/data/pubmed/trecText/non_comm_use.0-9A-B.txt.gz</path>
+    <class>trectext</class>
+  </corpus>
+  <corpus>
+    <path>/data/pubmed/trecText/non_comm_use.I-N.txt.gz</path>
+    <class>trectext</class>
+  </corpus>
+  <corpus>
+    <path>/data/pubmed/trecText/non_comm_use.C-H.txt.gz</path>
+    <class>trectext</class>
+  </corpus>
+  <corpus>
+    <path>/data/pubmed/trecText/non_comm_use.O-Z.txt.gz</path>
+    <class>trectext</class>
+  </corpus>
+  <stemmer>
+   <name>krovetz</name>
+  </stemmer>
+</parameters>

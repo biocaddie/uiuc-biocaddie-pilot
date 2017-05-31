@@ -10,7 +10,7 @@ to <- args[3]
 topics <- args[4]
 
 #for (metric in c("map", "ndcg", "ndcg_cut_5", "ndcg_cut_10", "ndcg_cut_20", "P_5", "P_10", "P_20")) {
-for (metric in c("map", "ndcg",  "P_20", "ndcg_cut_20")) {
+for (metric in c("map", "ndcg",  "P_20", "ndcg_cut_20", "P_100", "ndcg_cut_100")) {
     fromFile <- paste(from, col, topics, metric, "out", sep=".")
     toFile <- paste(to, col, topics, metric, "out", sep=".")
 

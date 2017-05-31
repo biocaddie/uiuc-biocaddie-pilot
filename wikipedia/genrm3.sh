@@ -13,8 +13,8 @@ fi
 col=$2
 
 base=/data/biocaddie
-mkdir -p output/pubmed/$col/$topics
-mkdir -p queries/pubmed/$col/$topics
+mkdir -p output/wikipedia/$col/$topics
+mkdir -p queries/wikipedia/$col/$topics
 #for mu in 50 250 500 1000 2500 5000 10000
 #do
 mu=2500
@@ -24,8 +24,9 @@ mu=2500
       do
          for fbOrigWeight in  0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
          do
-            echo "scripts/run.sh edu.gslis.biocaddie.util.GetFeedbackQueries -input queries/queries.$col.$topics -output queries/pubmed/$col/$topics/queries.mu:$mu,fbTerms:$fbTerms,fbDocs:$fbDocs,fbOrigWeight:$fbOrigWeight -index /data/pubmed/indexes/pubmed/ -fbDocs $fbDocs -fbTerms $fbTerms -rmLambda $fbOrigWeight -maxResults $fbDocs -stoplist data/stoplist.all -mu $mu"
+            scripts/run.sh edu.gslis.biocaddie.util.GetFeedbackQueries -input queries/queries.$col.$topics -output queries/wikipedia/$col/$topics/queries.mu:$mu,fbTerms:$fbTerms,fbDocs:$fbDocs,fbOrigWeight:$fbOrigWeight -index /data/wikipedia/indexes/20150901/index -fbDocs $fbDocs -fbTerms $fbTerms -rmLambda $fbOrigWeight -maxResults $fbDocs -stoplist data/stoplist.all -mu $mu
          done
       done
    done
 #done
+

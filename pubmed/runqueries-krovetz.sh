@@ -14,13 +14,13 @@ col=$2
 
 base=/data/biocaddie
 
-mkdir -p output/pubmed/$col/$topics
+mkdir -p output/pubmed-krovetz/$col/$topics
 find queries/pubmed/$col/$topics -type f | while read file
 do
     for mu in 50 250 500 1000 2500 5000 10000
     do
         fileName=`basename $file`
-        echo "IndriRunQuery -index=$base/indexes/biocaddie_all -rule=method:dir,mu:$mu -trecFormat $file > output/pubmed/$col/$topics/$fileName,dir-mu:$mu"
+        echo "IndriRunQuery -index=$base/indexes/biocaddie_all.krovetz -rule=method:dir,mu:$mu -trecFormat $file > output/pubmed-krovetz/$col/$topics/$fileName,dir-mu:$mu"
     done
 done
 
