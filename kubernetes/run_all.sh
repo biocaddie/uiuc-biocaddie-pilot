@@ -24,7 +24,6 @@ elif [ "${TOPICS/$topics/ }" == "$TOPICS" ]; then
    echo "./run_all.sh [model] [topics] [collection]"
    echo "topics must be one of: $TOPICS"
    exit 1
-
 fi
 
 # If no collection specified, run all collections
@@ -39,14 +38,13 @@ fi
 
 # NOTE: These paths are external to the container
 base=/data/biocaddie
-src_base=~/biocaddie
 for model in $models
 do
    for col in $collections
    do
       for topic in $topics
       do
-         $src_base/kubernetes/$model.sh $topic $col 
+         kubernetes/$model.sh $topic $col 
       done
    done
 done

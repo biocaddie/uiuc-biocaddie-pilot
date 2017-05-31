@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
       - name: redis-worker
-        image: worker
+        image: ndslabs/redis-worker
         imagePullPolicy: IfNotPresent
         env:
         - name: REDIS_SERVICE_QUEUE
