@@ -11,7 +11,7 @@ spec:
       containers:
       - name: redis-worker
         image: ndslabs/redis-worker
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         env:
         - name: REDIS_SERVICE_QUEUE
           value: "{{ name }}"
@@ -25,10 +25,10 @@ spec:
       volumes:
       - name: queries
         hostPath:
-          path: /home/ubuntu/biocaddie/queries
+          path: /var/glfs/global/biocaddie/queries
       - name: output
         hostPath:
-          path: /home/ubuntu/biocaddie/output
+          path: /var/glfs/global/biocaddie/output
       - name: input
         hostPath:
           path: /data

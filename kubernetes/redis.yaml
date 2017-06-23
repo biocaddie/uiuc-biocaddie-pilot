@@ -23,9 +23,16 @@ spec:
     spec:
       containers:
       - name: redis
-        image: redis
+        image: ndslabs/biocaddie-redis
         env:
           - name: MASTER 
             value: "true"
         ports:
         - containerPort: 6379
+        volumeMounts:
+        - mountPath: /root/biocaddie/
+          name: src
+      volumes:
+      - name: src
+        hostPath:
+          path: /var/glfs/global/biocaddie/
