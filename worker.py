@@ -23,9 +23,13 @@ q = rediswq.RedisWQ(name=queue, host=host)
 logger.info("Worker started with sessionID: {0}".format(q.sessionID()))
 logger.debug("Initial state: empty={0}".format(str(q.empty())))
 
+# Timeout for worker pods in seconds
+timeout=600
 start_time = time.time()
-while not q.empty():
-  item = q.lease(lease_secs=200, block=True, timeout=2) 
+next_timeout = start_time + timeout
+
+while not q.empty() and time.time() < next_timeout:
+  item = q.lease(lease_secs=600, block=True, timeout=2) 
   if item is not None:
     # Read a work item (a bash command) from the queue
     command = item.decode("utf=8")
@@ -36,12 +40,15 @@ while not q.empty():
         output = subprocess.check_output(['bash', '-c', command], shell=False) 
         # Mark the item as complete in the queue
         q.complete(item)
+
+	next_timeout = time.time() + timeout
     except CalledProcessError as ex:
         logger.error("ERROR: {0} - {1}".format(ex.returnCode, ex.output))
 
   else:
     logger.debug("Waiting for work")
-logger.debug("Queue is empty, exiting")
+    
+logger.debug("Queue is empty after timeout, exiting")
 
 # Calculate elapsed run time
 elapsed_time=time.time() - start_time
