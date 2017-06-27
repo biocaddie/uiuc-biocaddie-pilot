@@ -32,7 +32,12 @@ spec:
         volumeMounts:
         - mountPath: /root/biocaddie/
           name: src
+        - mountPath: /data
+          name: data
       volumes:
       - name: src
         hostPath:
           path: /var/glfs/global/biocaddie/
+      - name: data
+        hostPath:
+          path: /var/glfs/global/data/
