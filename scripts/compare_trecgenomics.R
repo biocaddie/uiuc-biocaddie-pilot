@@ -1,14 +1,16 @@
 #!/usr/bin/env Rscript
 
 args = commandArgs(trailingOnly=TRUE)
-setwd("/data/trecgenomics/loocv")
 
 options(digits=4)
 col <- args[1]
 from <- args[2]
 to <- args[3]
 topics <- args[4]
+year <- args[5]
 
+filePath <- paste("/data/trecgenomics/loocv",year,sep="/")
+setwd(filePath)
 
 for (metric in c("map", "ndcg",  "P_20", "ndcg_cut_20", "P_100", "ndcg_cut_100")) {
     fromFile <- paste(from, col, topics, metric, "out", sep=".")
