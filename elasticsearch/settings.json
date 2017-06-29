@@ -1,13 +1,11 @@
 { 
   "mappings": {
     "dataset": {
-      "properties": {
-        "_all": {
-          "type": "text",
-          "term_vector": "with_positions_offsets_payloads",
-          "store" : true,
-          "analyzer" : "fulltext_analyzer"
-         }
+      "_all": {
+        "type": "text",
+        "term_vector": "with_positions_offsets_payloads",
+        "store" : true,
+        "analyzer" : "fulltext_analyzer"
       }
     }
   },
