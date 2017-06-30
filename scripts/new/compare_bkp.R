@@ -3,18 +3,25 @@
 args = commandArgs(trailingOnly=TRUE)
 
 options(digits=4)
-col <- args[1]
+subset <- args[1]
 from <- args[2]
 to <- args[3]
 topics <- args[4]
-year <- args[5]
+col <- args[5]
 
-filePath <- paste("/data/trecgenomics/loocv",year,sep="/")
+filePath <- paste("/data",col,"loocv",sep="/")
+
+#if year argument is available, update path for loocv
+if(length(args)==6){
+    year=args[6]
+    filePath <- paste(filePath,year,sep="/")
+}
+
 setwd(filePath)
 
 for (metric in c("map", "ndcg",  "P_20", "ndcg_cut_20", "P_100", "ndcg_cut_100")) {
-    fromFile <- paste(from, col, topics, metric, "out", sep=".")
-    toFile <- paste(to, col, topics, metric, "out", sep=".")
+    fromFile <- paste(from, subset, topics, metric, "out", sep=".")
+    toFile <- paste(to, subset, topics, metric, "out", sep=".")
 
     fromData <- read.table(fromFile, header=F)
     toData <- read.table(toFile, header=F)
