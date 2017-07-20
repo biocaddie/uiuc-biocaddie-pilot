@@ -29,7 +29,7 @@ start_time = time.time()
 next_timeout = start_time + timeout
 
 while not q.empty() and time.time() < next_timeout:
-  item = q.lease(lease_secs=600, block=True, timeout=2) 
+  item = q.lease(lease_secs=600, block=True, timeout=10) 
   if item is not None:
     # Read a work item (a bash command) from the queue
     command = item.decode("utf=8")
@@ -42,7 +42,7 @@ while not q.empty() and time.time() < next_timeout:
         q.complete(item)
 
 	next_timeout = time.time() + timeout
-    except CalledProcessError as ex:
+    except subprocess.CalledProcessError as ex:
         logger.error("ERROR: {0} - {1}".format(ex.returnCode, ex.output))
 
   else:
