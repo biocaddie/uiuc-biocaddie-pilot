@@ -73,19 +73,43 @@ Once your cluster is running, you'll need to deploy an instance of Redis using t
 kubectl create -f ./kubernetes/redis.yaml
 ```
 
-This will start up an instance of Redis on your cluster. Execute `kubectl get service` to retrieve the IP of the Redis service:
+This will start up an instance of Redis on your cluster. Execute `kubectl get pods` to retrieve the name of the Redis pod:
 ```bash
 ubuntu@integration-3:~/biocaddie$ kubectl get svc
-NAME         CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
-kubernetes   10.0.0.1     <none>        443/TCP    6d
-redis        10.0.0.49    <none>        6379/TCP   5d
+core@biocaddie-master1 ~ $ kubectl get pods
+NAME                         READY     STATUS    RESTARTS   AGE
+redis-0p8vk                  1/1       Running   0          15d
 ```
 
-In our example, we can see the Redis IP is `10.0.0.49` and its port is `6379`.
-
-You will then need to set an environment variable to point to this IP address:
+Acquire a shell into this container using `kubectl exec`:
 ```bash
-export REDIS_SERVICE_HOST=10.0.0.49
+export REDIS_NAME=$(kubectl get pods | grep redis | grep -v Terminating | awk '{print $1}')
+kubectl exec -it ${REDIS_NAME} bash
+```
+
+Once you're inside of the Redis container, you should see that your current working directory is `biocaddie` and it already contains the source needed to run the baseline scripts:
+```bash
+core@biocaddie-master1 ~ $ kubectl exec -it $(kubectl get pods | grep redis | grep -v Terminating | awk '{print $1}') bash
+root@redis-0p8vk:~/biocaddie# ls -al kubernetes/
+total 38
+drwxr-xr-x.  2 redis root  4096 Jun 28 16:34 .
+drwxr-xr-x. 18 redis root  4096 Jul 20 16:28 ..
+-rw-r--r--.  1 redis root 11626 Jun 27 18:10 README.md
+-rwxr-xr-x.  1 redis root   839 Jun 27 18:10 dir-krovetz.sh
+-rwxr-xr-x.  1 redis root   814 Jun 27 18:10 dir.sh
+-rw-r--r--.  1 redis root   635 Jun 27 18:10 indri.yaml
+-rwxr-xr-x.  1 redis root   840 Jun 27 18:10 jm.sh
+-rw-r--r--.  1 redis root  1066 Jun 27 18:10 job.yaml
+-rwxr-xr-x.  1 redis root   996 Jun 27 18:10 okapi.sh
+-rw-r--r--.  1 redis root   803 Jun 27 18:10 redis.yaml
+-rwxr-xr-x.  1 redis root  1556 Jun 27 18:37 reindex.sh
+-rwxr-xr-x.  1 redis root  1213 Jun 27 18:10 rm3-krovetz.sh
+-rwxr-xr-x.  1 redis root  1220 Jun 27 18:10 rm3-stopped.sh
+-rwxr-xr-x.  1 redis root  1169 Jun 27 18:10 rm3.sh
+-rwxr-xr-x.  1 redis root  1216 Jun 27 18:10 run_all.sh
+-rwxr-xr-x.  1 redis root   936 Jun 27 18:10 tfidf.sh
+-rwxr-xr-x.  1 redis root   947 Jun 27 18:10 two.sh
+-rw-r--r--.  1 redis root   810 Jun 28 16:34 worker.yaml
 ```
 
 You are now ready to start running the baseline scripts on Kubernetes!
