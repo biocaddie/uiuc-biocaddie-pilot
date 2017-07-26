@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 if [ -z "$1" ]; then
    echo "./dir.sh <topics> <collection>"
    exit 1;
