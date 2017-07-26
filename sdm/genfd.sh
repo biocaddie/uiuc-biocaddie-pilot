@@ -1,5 +1,10 @@
 #!/bin/bash
 
+
+#
+# Generate full-dependence queries from standard queries
+#
+
 if [ -z "$1" ]; then
    echo "./genfd.sh <topics> <collection>"
    exit 1;
