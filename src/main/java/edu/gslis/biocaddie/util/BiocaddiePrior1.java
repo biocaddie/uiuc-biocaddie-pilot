@@ -82,13 +82,21 @@ public class BiocaddiePrior1
         	double score = Double.parseDouble(fields[4]);
         	        	
         	String repo = sourceMap.get(docno);
-        	
-        	double prior  = sourcePrior.get(repo);
+
+        	double prior = 0.000001;
+        	if (sourcePrior.get(repo) != null)  {     		
+        		prior  = sourcePrior.get(repo);        		
+        	}
+        	else 
+        		System.err.println("No prior for repo " + repo);
+
+//        	System.err.println(repo + ":" + prior);
         	score = Math.exp(score)*prior;
+        	
         	
         	SearchHit hit = new SearchHit();
         	hit.setDocno(docno);
-        	hit.setScore(score);
+        	hit.setScore(Math.log(score));
         	
         	SearchHits hits = new SearchHits();
         	if (results.containsKey(query))
@@ -108,10 +116,10 @@ public class BiocaddiePrior1
         	for (int i=0; i< hits.size(); i++) {
         		SearchHit hit = hits.getHit(i);
             	outputWriter.write(query + " Q0 " + hit.getDocno() 
-            			+ " " + (i+1) + " " + hit.getScore() + " " + runName);      		
+            			+ " " + (i+1) + " " + hit.getScore() + " " + runName + "\n");      		
         	}
-        	outputWriter.close();
         }
+    	outputWriter.close();
     }
     protected static Map<String, Double> calculateSourcePrior(String qrelsPath, String sourcePath, 
     		Map<String, String> sourceMap) throws IOException 
@@ -120,6 +128,10 @@ public class BiocaddiePrior1
         
         Qrels qrels = new Qrels(qrelsPath, false, 1);
         
+        for (String repo : sourceMap.values()) {
+    		if (!repoPrior.containsKey(repo)) 
+    			repoPrior.put(repo, 0D);
+        }
         // Count the number of relevant documents in the training data
         // for each repo.
         int numRel = 0;
@@ -129,7 +141,7 @@ public class BiocaddiePrior1
         		
         		double count = 0;
         		if (repoPrior.containsKey(repo)) 
-        			count += repoPrior.get(repo);
+        			count = repoPrior.get(repo) + 1;
         		
         		repoPrior.put(repo, count);
         		numRel++;
@@ -139,6 +151,7 @@ public class BiocaddiePrior1
         // Calculate prior with additive smoothing
         double epsilon = 1;
         for (String repo: repoPrior.keySet()) {
+        	//System.out.println(repo + " prior =" + repoPrior.get(repo) + " nrel=" + numRel + " size=" + repoPrior.size());
         	double pr = (repoPrior.get(repo) + epsilon) / (numRel + epsilon*repoPrior.size());
         	repoPrior.put(repo, pr);
         }
@@ -161,7 +174,7 @@ public class BiocaddiePrior1
         Options options = new Options();
         options.addOption("source", true, "Path to source training data");
         options.addOption("qrels", true, "Path to training qrels");
-        options.addOption("results", true, "Path to results file");
+        options.addOption("input", true, "Input path");
         options.addOption("output", true, "Output path");
         options.addOption("run", true, "Run name");
 
