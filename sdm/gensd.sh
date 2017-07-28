@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#
+# Generate sequential dependence queries from standard queries
+#
+
 if [ -z "$1" ]; then
    echo "./gensd.sh <topics> <collection>"
    exit 1;

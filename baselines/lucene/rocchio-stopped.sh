@@ -13,7 +13,7 @@ fi
 col=$2
 
 base=/data/biocaddie
-mkdir -p output-lucene/rocchio/$col/$topics
+mkdir -p lucene-output/rocchio-stopped/$col/$topics
 
 for b in 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
 do
@@ -25,7 +25,7 @@ do
          do
             for fbOrigWeight in  0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
             do
-                echo "scripts/run.sh edu.gslis.lucene.main.LuceneRunQuery -index $base/lucene/biocaddie_all/shard0/ -queryfile queries/queries.$col.$topics  -format indri -field text -similarity method:bm25,k1:$k1,b:$b -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight > output-lucene/rocchio/$col/$topics/k1=$k1:b=$b:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out"
+                echo "scripts/run.sh edu.gslis.lucene.main.LuceneRunQuery -index $base/lucene/biocaddie_all/shard0/ -queryfile queries/queries.$col.$topics  -format indri -field text -stopwords data/stoplist.all -similarity method:bm25,k1:$k1,b:$b -fbDocs=$fbDocs -fbTerms=$fbTerms -fbOrigWeight=$fbOrigWeight > lucene-output/rocchio-stopped/$col/$topics/k1=$k1:b=$b:fbTerms=$fbTerms:fbDocs=$fbDocs:fbOrigWeight=$fbOrigWeight.out"
             done
          done
       done
