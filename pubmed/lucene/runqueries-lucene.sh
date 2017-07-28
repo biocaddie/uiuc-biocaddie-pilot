@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#
+# Run the Rocchio-expanded queries 
+#
+
 if [ -z "$1" ]; then
    echo "./runqueries-lucene.sh <topics> <collection>"
    exit 1;
