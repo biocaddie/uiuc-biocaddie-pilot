@@ -69,8 +69,6 @@ public class GetFeedbackQueriesRocchio {
         
 		queries.read(inputPath);
 		
-
-		//outputWriter.write("<parameters>\n");
 		GQueries feedbackQueries = new GQueriesJsonImpl();
 		
 		Iterator<GQuery> queryIterator = queries.iterator();
@@ -82,19 +80,10 @@ public class GetFeedbackQueriesRocchio {
         	rocchioFb.setStopper(stopper);
         	rocchioFb.expandQuery(index, query, fbDocs, fbTerms);      	
         	  
-        	feedbackQueries.addQuery(query);
-        	/*
-        	String luceneQueryString = ((IndexWrapperLuceneImpl)index).getLuceneQueryString(query);
-        	outputWriter.write("<query>\n");
-        	outputWriter.write("   <number>" + query.getTitle() + "</number>\n");
-        	outputWriter.write("   <text>" + luceneQueryString + "</text>\n");
-        	outputWriter.write("</query>\n");
-        	*/
-	        	        
+        	feedbackQueries.addQuery(query);	        
 		}
 		
 		outputWriter.write(feedbackQueries.toString());
-		//outputWriter.write("</parameters>\n");
 		outputWriter.close();
     }
     
