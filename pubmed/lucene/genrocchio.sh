@@ -23,10 +23,9 @@ k1=1.2
 b=0.75
 #for b in 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
 #for k1 in 1.0 1.2 1.5 1.7 2.0
-for fbTerms in 75 100
+for fbTerms in 5 10 20 50
 do
-#   for fbDocs in 5 10 20 50 100
-   for fbDocs in 75 100
+   for fbDocs in 5 10 20 50
    do
       for beta in  0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
       do
