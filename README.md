@@ -6,13 +6,13 @@ This repository contains code for the NDS [bioCADDIE pilot](https://biocaddie.or
 
 This repository includes:
 
-* Scripts to run baseline models under Indri (QL, OKAPI, RM3) and Lucene (BM25, Rocchio) baseline models for the bioCADDIE, OHSUMED, and TREC Genomics test collections.
-* Scripts to run PubMed and Wikipedia expansion models, both RM3 and Rocchio, for bioCADDIE, OHSUMED and TREC Genomics collections.
-* Implementation of the Rocchio algorithm for use with Lucene.  A separate [Rocchio plugin for ElasticSearch](https://github.com/nds-org/elasticsearch-queryexpansion-plugin) is also available from.
-* Scripts to create Indri, Lucene, and ElasticSearch indexes for bioCADDIE and PubMed data.
-* Scripts to run baselines using Kubernetes with associated Docker images.
-* Source queries used for evaluation.
-* Scripts to generate evalaution output, leave-one-query-out cross validation, and statistical comparison. 
+* Scripts to run [baseline models](/baselines) under Indri (QL, OKAPI, RM3) and Lucene (BM25, Rocchio) baseline models for the bioCADDIE, OHSUMED, and TREC Genomics test collections.
+* Scripts to run [PubMed](/pubmed) and [Wikipedia](/wikipedia) expansion models, both RM3 and Rocchio, for bioCADDIE, OHSUMED and TREC Genomics collections.
+* Implementation of the [Rocchio algorithm for use with Lucene](https://github.com/uiucGSLIS/ir-tools/blob/master/src/main/java/edu/gslis/lucene/expansion/Rocchio.java) via the [ir-tools](https://github.com/uiucGSLIS/ir-tools/) toolkit. A separate [Rocchio plugin for ElasticSearch](https://github.com/nds-org/elasticsearch-queryexpansion-plugin) is also available from.
+* Scripts to create [Indri](/index), [Lucene](/index), and [ElasticSearch](/elasticsearch) indexes for bioCADDIE and PubMed data.
+* Scripts to run [baselines using Kubernetes](/kubernetes) with associated Docker images.
+* Source [queries](/queries) used for evaluation.
+* Scripts to generate [evalaution output, leave-one-query-out cross validation, and statistical comparison](/scripts). 
 * Java source code for expansion model generation, PubMed ingest, and cross-validation
 
 
