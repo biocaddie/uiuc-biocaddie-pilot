@@ -1,8 +1,21 @@
-# NDS BioCADDIE Prototype 
+# NDS bioCADDIE Pilot 
 
-This repository contains the code used in the NDS/uiucGSLIS submission to the 2016 BioCADDIE challenge and subsequent prototype. The submission is based primarily on the Indri search engine and explores 1) feedback-based expansion models using PubMed as an external collection and 2) document priors based on dataset source repository.
+This repository contains code for the NDS [bioCADDIE pilot](https://biocaddie.org/expansion-models-biomedical-data-search) and submission to the [2016 bioCADDIE Dataset Retrieval Challenge](biocaddie.org/biocaddie-2016-dataset-retrieval-challenge). The pilot project explores expansion models for biomedical data search focusing on query expansion using external collections (e.g., PubMed, Wikipedia), document expansion, and document priors based on dataset source repository.
+
+This repository includes:
+
+* Scripts to run baseline models under Indri (QL, OKAPI, RM3) and Lucene (BM25, Rocchio) baseline models for the bioCADDIE, OHSUMED, and TREC Genomics test collections.
+* Scripts to run PubMed and Wikipedia expansion models, both RM3 and Rocchio, for bioCADDIE, OHSUMED and TREC Genomics collections.
+* Implementation of the Rocchio algorithm for use with Lucene.  A separate [Rocchio plugin for ElasticSearch](https://github.com/nds-org/elasticsearch-queryexpansion-plugin) is also available from.
+* Scripts to create Indri, Lucene, and ElasticSearch indexes for bioCADDIE and PubMed data.
+* Scripts to run baselines using Kubernetes with associated Docker images.
+* Source queries used for evaluation.
+* Scripts to generate evalaution output, leave-one-query-out cross validation, and statistical comparison. 
+* Java source code for expansion model generation, PubMed ingest, and cross-validation
+
 
 ## Prerequisites
+
 
 * Indri 5.8 with JNI support (liblemur.so, liblemur_jni.so, libindri.so, libindri_jni.so)
 * Java 1.8 (JDK) with Maven
