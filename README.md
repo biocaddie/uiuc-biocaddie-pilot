@@ -1,5 +1,7 @@
 # NDS bioCADDIE Pilot 
 
+<img src="https://github.com/craig-willis/ndslabs/blob/master/docs/images/logos/NDS-badge.png" width="100" alt="NDS"> <img src="https://biocaddie.org/sites/default/files/biocaddie-logo.png" alt="bioCADDIE">
+
 This repository contains code for the NDS [bioCADDIE pilot](https://biocaddie.org/expansion-models-biomedical-data-search) and submission to the [2016 bioCADDIE Dataset Retrieval Challenge](biocaddie.org/biocaddie-2016-dataset-retrieval-challenge). The pilot project explores expansion models for biomedical data search focusing on query expansion using external collections (e.g., PubMed, Wikipedia), document expansion, and document priors based on dataset source repository.
 
 This repository includes:
