@@ -16,6 +16,43 @@
     <connection>scm:git:git:git@github.com:nds-org/biocaddie.git</connection>
     <developerConnection>scm:git:git@github.com:nds-org/biocaddie.git</developerConnection>
   </scm>
+  
+  <licenses>
+    <license>
+      <name>MIT</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Craig Willis</name>
+      <email>willis8@illinois.edu</email>
+      <organization>National Data Service</organization>
+      <organizationUrl>http://www.nationaldataservice.org/</organizationUrl>
+    </developer>
+  
+    <developer>
+      <name>Garrick Sherman</name>
+      <email>gsherma2@illinois.edu</email>
+      <organization>University of Illinois</organization>
+      <organizationUrl>http://ischool.illinois.edu/</organizationUrl>
+    </developer>
+    
+    <developer>
+      <name>Mike Lambert</name>
+      <email>lambert8@illinois.edu</email>
+      <organization>National Data Service</organization>
+      <organizationUrl>http://www.nationaldataservice.org/</organizationUrl>
+    </developer>
+    
+    <developer>
+      <name>Thuong Phan</name>
+      <email>thphan2@illinois.edu</email>
+      <organization>University of Illinois</organization>
+      <organizationUrl>http://ischool.illinois.edu/</organizationUrl>
+    </developer>
+  </developers>
 
   <parent>
     <groupId>org.sonatype.oss</groupId>
