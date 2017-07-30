@@ -77,11 +77,11 @@ public class IngestPubMedOAI {
 			return;
 		}
 
-		boolean useOai = Boolean.parseBoolean(cl.getOptionValue("oai", "true"));
+		boolean useOai = cl.hasOption("oai");
 		String inputPath = cl.getOptionValue("path");
 		String fromDate = cl.getOptionValue("fromDate", today());
 		String eshost = cl.getOptionValue("eshost", "localhost");
-		int esport = Integer.parseInt(cl.getOptionValue("seport", "9300"));
+		int esport = Integer.parseInt(cl.getOptionValue("esport", "9300"));
 
 		TransportClient client = new PreBuiltTransportClient(Settings.EMPTY)
 				.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(eshost), esport));
@@ -89,8 +89,10 @@ public class IngestPubMedOAI {
 		IngestPubMedOAI ingester = new IngestPubMedOAI(client);
 
 		if (useOai) {
+			System.err.println("Ingesting from OAI endpont " + fromDate);
 			ingester.ingestOai(client, fromDate);
 		} else {
+			System.err.println("Ingesting from filesystem " + inputPath);
 			ingester.ingestOaBulk(client, inputPath);
 		}
 
@@ -109,6 +111,7 @@ public class IngestPubMedOAI {
 		IdentifiersList identifiers = server.listIdentifiers("pmc", fromDate, null, null);
 		ResumptionToken token = null;
 
+		int updated = 0;
 		do {
 			if (token != null)
 				identifiers = server.listIdentifiers(token);
@@ -123,10 +126,12 @@ public class IngestPubMedOAI {
 				String id = getId(metadata);
 				String content = pmcXmlToString(metadata);
 				indexDoc(client, id, content);
+				updated++;
 			}
 
 			token = identifiers.getResumptionToken();
 		} while (token != null);
+		System.out.println("Updated/indexed " + updated + " documents");
 	}
 
 	public static String today() {
@@ -142,6 +147,7 @@ public class IngestPubMedOAI {
 				"non_comm_use.I-N.xml.tar.gz", "non_comm_use.O-Z.xml.tar.gz" };
 
 		for (String file : files) {
+			System.err.println("Reading " + file);
 			TarArchiveInputStream tarFile = new TarArchiveInputStream(
 					new GzipCompressorInputStream(new FileInputStream(inputPath + File.separator + file)));
 
@@ -151,7 +157,6 @@ public class IngestPubMedOAI {
 
 				if (currentEntry.isFile()) {
 					br = new BufferedReader(new InputStreamReader(tarFile));
-					currentEntry.getFile().getName();
 					String line;
 					String xml = "";
 					while ((line = br.readLine()) != null)
@@ -256,6 +261,7 @@ public class IngestPubMedOAI {
 		options.addOption("path", true, "Directory containing oa_bulk data");
 		options.addOption("eshost", true, "ElasticSearch host");
 		options.addOption("esport", true, "ElasticSearch port");
+		options.addOption("help", true, "Display this help command");
 
 		return options;
 	}

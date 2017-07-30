@@ -1,8 +1,23 @@
-# NDS BioCADDIE Prototype 
+# NDS bioCADDIE Pilot 
 
-This repository contains the code used in the NDS/uiucGSLIS submission to the 2016 BioCADDIE challenge and subsequent prototype. The submission is based primarily on the Indri search engine and explores 1) feedback-based expansion models using PubMed as an external collection and 2) document priors based on dataset source repository.
+<img src="https://github.com/craig-willis/ndslabs/blob/master/docs/images/logos/NDS-badge.png" width="100" alt="NDS"> <img src="https://biocaddie.org/sites/default/files/biocaddie-logo.png" alt="bioCADDIE">
+
+This repository contains code for the NDS [bioCADDIE pilot](https://biocaddie.org/expansion-models-biomedical-data-search) and submission to the [2016 bioCADDIE Dataset Retrieval Challenge](biocaddie.org/biocaddie-2016-dataset-retrieval-challenge). The pilot project explores expansion models for biomedical data search focusing on query expansion using external collections (e.g., PubMed, Wikipedia), document expansion, and document priors based on dataset source repository.
+
+This repository includes:
+
+* Scripts to run [baseline models](/baselines) under Indri (QL, OKAPI, RM3) and Lucene (BM25, Rocchio) baseline models for the bioCADDIE, OHSUMED, and TREC Genomics test collections.
+* Scripts to run [PubMed](/pubmed) and [Wikipedia](/wikipedia) expansion models, both RM3 and Rocchio, for bioCADDIE, OHSUMED and TREC Genomics collections.
+* Implementation of the [Rocchio algorithm for use with Lucene](https://github.com/uiucGSLIS/ir-tools/blob/master/src/main/java/edu/gslis/lucene/expansion/Rocchio.java) via the [ir-tools](https://github.com/uiucGSLIS/ir-tools/) toolkit. A separate [Rocchio plugin for ElasticSearch](https://github.com/nds-org/elasticsearch-queryexpansion-plugin) is also available from.
+* Scripts to create [Indri](/index), [Lucene](/index), and [ElasticSearch](/elasticsearch) indexes for bioCADDIE and PubMed data.
+* Scripts to run [baselines using Kubernetes](/kubernetes) with associated Docker images.
+* Source [queries](/queries) used for evaluation.
+* Scripts to generate [evalaution output, leave-one-query-out cross validation, and statistical comparison](/scripts). 
+* Java source code for expansion model generation, PubMed ingest, and cross-validation
+
 
 ## Prerequisites
+
 
 * Indri 5.8 with JNI support (liblemur.so, liblemur_jni.so, libindri.so, libindri_jni.so)
 * Java 1.8 (JDK) with Maven
