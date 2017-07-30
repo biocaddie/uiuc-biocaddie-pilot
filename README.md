@@ -85,46 +85,13 @@ mvn install
 
 This section describes the steps to repeat our 2016 BioCADDIE challenge submissions. The basic steps are:
 
-* Convert benchmark json data to trectext format
-* Build biocaddie Indri index
-* Run baseline models using Indri (tfidf, okapi, dir, jm, rm1, rm3, sdm)
+* [Convert benchmark json data to trectext format](/indexes)
+* [Build biocaddie Indri index](/indexes)
+* [Run baseline models using Indri](/baselines)
 * Convert PubMed collection to trectext format
 * Build pubmed Indri index
 * Run PubMed expansion models
 * Run models using repository priors
-
-
-### Convert benchmark data to trectext format
-
-Download the [BioCADDIE benchmark collection in JSON format](https://biocaddie.org/sites/default/files/update_json_folder.zip).
-```bash
-mkdir -p /data/biocaddie/data
-cd /data/biocaddie/data
-wget https://biocaddie.org/sites/default/files/update_json_folder.zip
-```
-
-### Convert data to TREC-text format:
-```bash
-cd ~/biocaddie
-scripts/dats2trec.sh
-```
-
-Note: You may see the following error, which is expected:
-```bash
-java.lang.ClassCastException: com.google.gson.JsonNull cannot be cast to com.google.gson.JsonObject
-	at edu.gslis.biocaddie.util.DATSToTrecText.main(DATSToTrecText.java:61)
-```
-
-This converts the benchmark data to trectext format.  This produces a file ``/data/biocaddie/data/biocaddie_all.txt``. You can remove the original benchmark data, if desired.
-
-### Create the biocaddie index
-
-See [indexes](/indexes).
-
-## Baseline models
-
-See [baseline models](baselines).
-
 
 ### Qrels and queries
 The official BioCADDIE qrels and queries have been converted to Indri format in the ``qrels`` and ``queries`` directories.  We provide both the original training queries and final test queries and qrels, as well as combined sets for ongoing research.  We also provide the original official queries as well as stopped and manually shortened versions. We only use the original queries in our official submissions, but the shortened queries are currently used for our primarily evaluation.
