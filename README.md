@@ -88,9 +88,9 @@ This section describes the steps to repeat our 2016 BioCADDIE challenge submissi
 * [Convert benchmark json data to trectext format](/index)
 * [Build biocaddie Indri index](/index)
 * [Run baseline models using Indri](/baselines)
-* Convert PubMed collection to trectext format
-* Build pubmed Indri index
-* Run PubMed expansion models
+* [Convert PubMed collection to trectext format](/index)
+* [Build pubmed Indri index](/index)
+* [Run PubMed expansion models](/pubmed)
 * Run models using repository priors
 
 ### Qrels and queries
@@ -126,59 +126,6 @@ Rscript scripts/compare.R combined tfidf dir short
 This will report the p-values of a paired, one-tailed t-test with the alternative hypothesis that <to model> is greater than <from model>.
 
 The model comparisons can be used to select the best model from the training data.  Model parameter estimates must be determined from the LOOCV output.
-
-
-## PubMed Open Access data
-
-This describes the process for building and running the PubMed expansion models.
-
-### Converting PubMed data to trectext
-
-Download the PubMed oa_bulk datasets to ``/data/pubmed/oa_bulk``:
-
-```bash
-mkdir -p /data/pubmed/oa_bulk
-cd /data/pubmed/oa_bulk
-wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.0-9A-B.txt.tar.gz
-wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.C-H.txt.tar.gz
-wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.I-N.txt.tar.gz
-wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.O-Z.txt.tar.gz
-```
-
-```bash
-cd ~/biocaddie
-scripts/pmc2trec.sh
-```
-
-This produces output in ``/data/pubmed/trecText/`` containing the TREC-formatted documents.
-
-### Create the pubmed index
-
-```bash
-mkdir -p /data/pubmed/indexes
-cd ~/biocaddie
-IndriBuildIndex index/build_index.pubmed.params
-```
-
-This will create an Indri index in ``/data/pubmed/indexes/pubmed``.
-
-### Run the pubmed expansion models
-
-The PubMed experiment requires two stages.  First, it uses ``edu.gslis.biocaddie.util.GetFeedbackQueries`` to generate the expansion queries from the ``pubmed`` index. Second, it uses ``edu.gslis.biocaddie.util.RunScorer`` to run the resulting queries against the ``biocaddie`` index.
-
-This requires sweeping the RM3 model parameters (mu, fbDocs, fbTerms, lambda) for the pubmed collection as well as the Dirichlet mu parameter for the biocaddie collection.
-
-This section assumes that you have an existing PubMed index under ``/data/pubmed/indexes/pubmed``:
-
-Create the RM expanded queries:
-```bash
-pubmed/genrm3.sh short combined
-```
-
-This will generate a set of expanded queries (mu=2500) under ``queries/pubmed/``. Now run the queries against the BioCADDIE index:
-```bash
-pubmed/runqueries.sh short combined | parallel -j 20 bash -c "{}"
-```
 
 
 ## Re-scoring using source priors
