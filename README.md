@@ -18,7 +18,7 @@ This repository includes:
 
 ## Prerequisites
 
-
+The pilot code in this repository requires the following software:
 * Indri 5.8 with JNI support (liblemur.so, liblemur_jni.so, libindri.so, libindri_jni.so)
 * Java 1.8 (JDK) with Maven
 * R
@@ -81,7 +81,6 @@ cd biocaddie
 mvn install
 ```
 
-
 ## Replication steps
 
 This section describes the steps to repeat our 2016 BioCADDIE challenge submissions. The basic steps are:
@@ -120,38 +119,15 @@ This converts the benchmark data to trectext format.  This produces a file ``/da
 
 ### Create the biocaddie index
 
-Use ``IndriBuildIndex`` to build the ``biocaddie_all`` index (customize paths as needed):
-```bash
-mkdir -p /data/biocaddie/indexes
-cd ~/biocaddie
-IndriBuildIndex index/build_index.biocaddie.params
-```
+See [indexes](/indexes).
+
+## Baseline models
+
+See [baseline models](baselines).
+
 
 ### Qrels and queries
 The official BioCADDIE qrels and queries have been converted to Indri format in the ``qrels`` and ``queries`` directories.  We provide both the original training queries and final test queries and qrels, as well as combined sets for ongoing research.  We also provide the original official queries as well as stopped and manually shortened versions. We only use the original queries in our official submissions, but the shortened queries are currently used for our primarily evaluation.
-
-## Baseline models
-We provide several bash scripts to sweep various Indri baseline model parameters:
-* ``dir.sh``: Query-likelihood with Dirichlet smoothing
-* ``jm.sh``: Query-likelihood with Jelinek-Mercer smoothing
-* ``okapi.sh``: Okapi-BM25
-* ``rm3.sh``:  Relevance models with original query interpolation
-* ``tfdf.sh``: Indri's default tfidf baseline
-* ``tfdfexp.sh``: Indri's tfidf baseline with expansion 
-* ``two.sh``: Query-likelihood with two-stage smoothing
-
-To run these scripts using GNU Parallel: 
-```bash
-baselines/<model>.sh <topics> <collection> | parallel -j 20 bash -c "{}"
-```
-
-Where ``<topics>`` is one of ``short, stopped, orig`` and collection is one of ``train, test, combined``. For example:
-```bash
-baselines/dir.sh short combined | parallel -j 20 bash -c "{}"
-```
-
-This will produce an output directory ``output/dir/combined/short`` containing one output file per parameter combination in TREC format.
-
 
 ## Cross-validation
 
