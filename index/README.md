@@ -31,6 +31,28 @@ This converts the benchmark data to trectext format.  This produces a file ``/da
 
 Build the indexes (see below).
 
+## PubMed Open Access data
+
+Converting PubMed data to trectext.
+
+Download the PubMed oa_bulk datasets to ``/data/pubmed/oa_bulk``:
+
+```bash
+mkdir -p /data/pubmed/oa_bulk
+cd /data/pubmed/oa_bulk
+wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.0-9A-B.txt.tar.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.C-H.txt.tar.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.I-N.txt.tar.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/non_comm_use.O-Z.txt.tar.gz
+```
+
+```bash
+cd ~/biocaddie
+scripts/pmc2trec.sh
+```
+
+`.
+
 
 ## Building indexes
 
@@ -75,6 +97,29 @@ This assumes a running ElasticSearch instance:
 cd ~/biocaddie/elasticsearch/biocaddie
 ./create-index.sh
 ./index-biocaddie.sh
+```
+
+### PubMed Indri
+
+This produces output in ``/data/pubmed/trecText/`` containing the TREC-formatted documents.
+
+Create the pubmed index:
+```bash
+mkdir -p /data/pubmed/indexes
+cd ~/biocaddie
+IndriBuildIndex index/build_index.pubmed.params
+```
+
+This will create an Indri index in ``/data/pubmed/indexes/pubmed``
+
+
+### PubMed Lucene
+
+The following command will build a Lucene 6.5 index with no stemming:
+```bash
+mkdir -p /data/biocaddie/lucene/
+cd ~/biocaddie
+scripts/run.sh edu.gslis.lucene.main.LuceneBuildIndex index/lucene_pubmed.yaml
 ```
 
 
