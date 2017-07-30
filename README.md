@@ -85,8 +85,8 @@ mvn install
 
 This section describes the steps to repeat our 2016 BioCADDIE challenge submissions. The basic steps are:
 
-* [Convert benchmark json data to trectext format](/indexes)
-* [Build biocaddie Indri index](/indexes)
+* [Convert benchmark json data to trectext format](/index)
+* [Build biocaddie Indri index](/index)
 * [Run baseline models using Indri](/baselines)
 * Convert PubMed collection to trectext format
 * Build pubmed Indri index
