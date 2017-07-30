@@ -93,8 +93,9 @@ This section describes the steps to repeat our 2016 BioCADDIE challenge submissi
 * [Run PubMed expansion models](/pubmed)
 * [Run models using repository priors](/priors)
 
-### Qrels and queries
-The official BioCADDIE qrels and queries have been converted to Indri format in the ``qrels`` and ``queries`` directories.  We provide both the original training queries and final test queries and qrels, as well as combined sets for ongoing research.  We also provide the original official queries as well as stopped and manually shortened versions. We only use the original queries in our official submissions, but the shortened queries are currently used for our primarily evaluation.
+## Qrels and queries
+
+Please see the [queries](/queries) directory for information about the different query formats used for evaluation.
 
 ## Cross-validation
 
@@ -128,14 +129,3 @@ This will report the p-values of a paired, one-tailed t-test with the alternativ
 The model comparisons can be used to select the best model from the training data.  Model parameter estimates must be determined from the LOOCV output.
 
 
-## Using Lucene
-
-Building the Lucene index:
-```bash
-scripts/run.sh edu.gslis.lucene.main.LuceneBuildIndex index/lucene_biocaddie.yaml
-```
-
-Running the QL baselines:
-```bash
-lucene/<model>.sh <topics> <collection> | parallel --eta bash -c "{}"
-```
