@@ -104,6 +104,7 @@
           </execution>
         </executions>
       </plugin>
+      
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
@@ -203,6 +204,21 @@
 
   </build>
   <dependencies>
+    <dependency>
+        <groupId>se.kb</groupId>
+        <artifactId>oai4j</artifactId>
+        <version>0.6b1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.elasticsearch</groupId>
+      <artifactId>elasticsearch</artifactId>
+      <version>5.3.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.elasticsearch.client</groupId>
+      <artifactId>transport</artifactId>
+      <version>5.3.2</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
