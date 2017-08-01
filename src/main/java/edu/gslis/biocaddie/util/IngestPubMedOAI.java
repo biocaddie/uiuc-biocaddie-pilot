@@ -186,12 +186,11 @@ public class IngestPubMedOAI {
 	 *            PMCID or PMID
 	 * @param content
 	 *            Text content of document
-	 * @throws UnknownHostException
-	 * @throws InterruptedException
-	 * @throws ExecutionException
+	 * @throws IOException
+	 * 			  if an error occurs in hostname lookup or command execution
 	 */
 	public void indexDoc(TransportClient client, String id, String content)
-			throws UnknownHostException, InterruptedException, ExecutionException {
+			throws IOException {
 
 		IndexRequestBuilder indexRequest = client.prepareIndex(PUBMED_INDEX_NAME, PUBMED_DOCUMENT_TYPE, id);
 
@@ -209,6 +208,7 @@ public class IngestPubMedOAI {
 	 * PMCID, if present. Otherwise use PMID.
 	 * 
 	 * @param doc
+	 * 			  the document for which to get the id
 	 * @return ID or null
 	 */
 	public String getId(String doc) {
@@ -227,7 +227,8 @@ public class IngestPubMedOAI {
 	/**
 	 * Use Tika to convert PubMed XML to text
 	 * 
-	 * @param doc
+	 * @param xml
+	 * 			  the XML document to convert
 	 * @return Simple text
 	 */
 	public String pmcXmlToString(String xml) {
@@ -252,7 +253,7 @@ public class IngestPubMedOAI {
 	/**
 	 * Setup the command-line options for this application
 	 * 
-	 * @return
+	 * @return the command-line options for this class
 	 */
 	public static Options createOptions() {
 		Options options = new Options();
